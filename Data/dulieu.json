@@ -1,0 +1,42 @@
+[
+    {
+      "UserName": "John Doe",
+      "StatusContent": "This is my latest status update."
+    },
+    {
+      "UserName": "Jane Smith",
+      "StatusContent": "I'm having a great day!"
+    },
+    {
+      "UserName": "Peter Jones",
+      "StatusContent": "Check out my new blog post!"
+    },
+    {
+      "UserName": "Mary Brown",
+      "StatusContent": "Just finished a coding project."
+    },
+    {
+      "UserName": "David Williams",
+      "StatusContent": "Hanging out with friends."
+    },
+    {
+      "UserName": "Sarah Miller",
+      "StatusContent": "Taking a break from work."
+    },
+    {
+      "UserName": "Michael Johnson",
+      "StatusContent": "Going to the gym."
+    },
+    {
+      "UserName": "Anna Taylor",
+      "StatusContent": "Cooking dinner."
+    },
+    {
+      "UserName": "Robert Thompson",
+      "StatusContent": "Watching a movie."
+    },
+    {
+      "UserName": "Linda Hamilton",
+      "StatusContent": "Reading a book."
+    }
+  ]
