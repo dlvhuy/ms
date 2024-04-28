@@ -1,10 +1,11 @@
-import { Pressable, StyleSheet, Touchable,View,Text } from "react-native";
+import { Pressable, StyleSheet, Touchable,View,Text, useWindowDimensions } from "react-native";
 import FontAwsome from "@expo/vector-icons/FontAwesome"
-export default function ButtonIcon({nameIcon,onPress})
+import Ionicons from '@expo/vector-icons/Ionicons';
+export default function ButtonIcon({nameIcon})
 {
     return(
         <View style={styleButtonIcon.button}>
-           <FontAwsome.Button onPress={() => {onPress}} size={20} name={nameIcon}/>
+            <Ionicons name={nameIcon} size={25} color="gray" />
         </View>
     )
 }
@@ -12,15 +13,16 @@ export default function ButtonIcon({nameIcon,onPress})
 const styleButtonIcon = StyleSheet.create({
     button:{
         
-        justifyContent:"center",
-        alignItems:"center",
-        width:40,
-        height:40,
-        borderRadius:40,
+        justifyContent: 'center',
+        alignItems: 'center',
         borderWidth:2,
+        height:45,
+        width:45,
+        borderRadius:16,
         borderColor:"gray",
-        opacity:0.6,
-        color:"gray",
+        opacity:0.7
+        
 
     },
+   
 });

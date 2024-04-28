@@ -1,58 +1,70 @@
-import { Button, StyleSheet,TextInput, View,Image,Text, TouchableOpacity  } from "react-native";
+import { Button, StyleSheet,TextInput, View,Image,Text, TouchableOpacity, StatusBar, Pressable  } from "react-native";
 import ButtonIcon from "../CommonComponents/ButtonIcon";
-import * as ImagePicker from "react-native-image-picker";
-import { useState } from "react";
+import * as ImagePicker from 'expo-image-picker'
+import { useRef, useState } from "react";
+import ItemImageList from "../CommonComponents/Images/ItemImageList";
 
 
 
 export default function PostAdd({UserName})
 {
-    const [selectImage,setSelectImage] = useState();
-
-    let options = {
-       
-        storageOptions: {
-          saveToPhotos: true,
-          mediaType: 'images',
-        },
-      };
-    const openlib =  () => {
-        ImagePicker.launchImageLibrary({ noData: true }, (response) => {
-            console.log(response);
-            // if (response) {
-            //   setPhoto(response);
-            // }
-          });
+    const [selectImage,setSelectImage] = useState(null);
+    
+    const handleRemoveImage = () =>{
+        setSelectImage(null);
     }
-    const avatar = require("../../assets/adaptive-icon.png");
+
+    const pickImage = async () =>{
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [16,9],
+            quality: 1,
+        });
+        console.log(result);
+        
+        if (!result.canceled) {
+        setSelectImage(result.assets[0].uri);
+    }
+
+    
+
+    }
+    const avatar = require("../../assets/facebook.png");
     return (
         <View style={stylePostAdd.PostAdd}>
-            <View style={stylePostAdd.ContainerInfomation}>
-                    <Image style={stylePostAdd.imageAvatar} source={selectImage} ></Image>
+            <View style={stylePostAdd.ContainerHeader}>
+                <View style={stylePostAdd.ContainerInfomation}>
+                    <Image style={stylePostAdd.imageAvatar} source={avatar} ></Image>
                     <Text style={stylePostAdd.UserName}>{UserName}</Text>
-            </View>
-            <TextInput  multiline numberOfLines={3}   style={stylePostAdd.input} placeholder="What's on your mind, UserName"/>
-            <View style={stylePostAdd.button}>
-                <View style={stylePostAdd.buttonContainerIcon}>
-                    <ButtonIcon onPress={() => openlib()}  nameIcon={"image"}/>
-                    <TouchableOpacity onPress={() => ImagePicker.launchImageLibrary({
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 200,
-      maxWidth: 200,
-    },
-    (response) => {
-      console.log(response);
-      this.setState({
-        resourcePath: response
-      });
-    },
-  )}>
-                        <Text>Helloworld</Text>
-                    </TouchableOpacity>
-                    {/* <ButtonIcon onPress={() => {console.log("PlaceHere")}}nameIcon={"location-arrow"}/> */}
                 </View>
-                <Button  title="Post"></Button>
+            </View>
+            
+            <View style={stylePostAdd.ViewInput} >
+                <TextInput
+                    
+                    placeholder="What's on your mind, UserName"
+                    multiline
+                    numberOfLines={5}
+                    style={stylePostAdd.input}
+                    />            
+            </View>
+            {console.log("day nx",selectImage)}
+                <View style={stylePostAdd.ContainerListImage}>
+                    {selectImage &&  <ItemImageList onPress={handleRemoveImage} source={selectImage}/>}
+                </View>
+                
+            <View style={stylePostAdd.ContainerButtons}>
+                <View style={stylePostAdd.ContainerButtonIcon}>
+                    <Pressable onPress={pickImage}>
+                        <ButtonIcon nameIcon={"image"} ></ButtonIcon>
+                    </Pressable>
+                    <ButtonIcon nameIcon={"camera"} ></ButtonIcon>
+                    <ButtonIcon nameIcon={"location"} ></ButtonIcon>
+                </View>
+                <View>
+                        <Button title="Post"></Button>
+                </View>
             </View>
         </View>
     )
@@ -61,14 +73,20 @@ export default function PostAdd({UserName})
 const stylePostAdd = StyleSheet.create({
     PostAdd:{
         backgroundColor:"white",
-        marginVertical:10,
+        marginVertical:StatusBar.currentHeight,
         padding: 20,
         borderRadius:16,
         shadowColor:"Black", 
     },
-    ContainerInfomation:{  
+    ContainerHeader:{
+        paddingHorizontal:8,  
         flexDirection:"row",
-        justifyContent:"flex-start"
+        justifyContent:"space-between",
+        alignItems:"center"
+    },
+    ContainerInfomation:{
+        flexDirection:"row",
+        justifyContent:"center"
     },
     imageAvatar:{
         width:50,
@@ -77,34 +95,56 @@ const stylePostAdd = StyleSheet.create({
         borderWidth:1,
         marginRight:8
     },
+    ViewInput:{
+        marginVertical:8,
+        
+    },
+    SelectedImage:{
+        height:80,
+        width:80,
+        borderRadius:8,
+    },
     input:{
-        height:70,
+        paddingHorizontal:8,
+        borderRadius:8,
+        height:50,
         fontSize:20,
+        borderColor:"gray",
         
     },
     button:{
+        backgroundColor:"blue",
         flexDirection:"row",
         justifyContent:"space-between",
         columnGap:10
     },
-    buttonIcon:{
-        flex:1,
-        justifyContent:"flex-start",
-        alignItems:"center",
-        borderWidth:1,
-        borderRadius:50,
-        
-        backgroundColor:"blue",
+    ContainerButtonIcon:{
+        paddingHorizontal:8,  
+        flexDirection:"row",
+        gap:8
+    },
+    ContainerButtons:{
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center"
+    },
+    ContainerListImage:{
+        paddingHorizontal:8,
+        marginVertical:8,
     },
     buttonContainerIcon:{
+        
+       
         flexDirection:"row",
-        columnGap:5,
+        columnGap:10,
     },
     UserName:{
-        fontSize:15
+        fontSize:18
     },
-    buttonRadius:{
-        borderRadius:50
-    }  
+    image:{
+        width:100,
+        height:100
+    }
+    
     
 })

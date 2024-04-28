@@ -1,5 +1,5 @@
 import { View,TextInput, StyleSheet ,Text, Button } from "react-native"
-
+import { postLoginData, postLoginDataAxios } from "../../Apis/SignIn_SignUp/LoginAPI";
 export default function LogInForm ()
 {
     return (
@@ -19,7 +19,7 @@ export default function LogInForm ()
                 secureTextEntry
                 />
                 <View style={styleFormLogin.ContainerButton}>
-                    <Button style={styleFormLogin.button} title="Login"></Button>
+                    <Button onPress={postLoginData} style={styleFormLogin.button} title="Login"></Button>
                 </View>
             </View>
         </View>
