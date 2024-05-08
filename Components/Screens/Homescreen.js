@@ -1,17 +1,20 @@
 import {View, StyleSheet,StatusBar, ScrollView } from "react-native"
 import Header from "../Header/Header"
 import ListPost from "../Lists/ListPost"
-import UserInfomation from "../UserInfomation/UserInfomation"
+
 
 export default function HomeScreen()
-{
+{   
+    
     return(
-        <View style={styleHomeScreen.containerHomeScreen}>
-            <Header IsMainHeader={true}/>
-            <ScrollView>
-                <ListPost/>
-            </ScrollView>
-        </View>
+        
+            <View style={styleHomeScreen.containerHomeScreen}>
+                <Header IsMainHeader={true}/>
+                <ScrollView>
+                    <ListPost/>
+                </ScrollView>
+            </View>
+        
     )
 }
 

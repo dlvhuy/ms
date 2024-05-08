@@ -1,14 +1,18 @@
 import { Button, StyleSheet,TextInput, View,Image,Text, TouchableOpacity, StatusBar, Pressable  } from "react-native";
-import ButtonIcon from "../CommonComponents/ButtonIcon";
+import ButtonIcon from "../CommonComponents/Buttons/ButtonIcon";
 import * as ImagePicker from 'expo-image-picker'
-import { useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
+import { Test,HubConnections } from "../../Apis/HubsConnection/Hubs";
+import { AddPost } from "../../Apis/Posts/AllPosts";
+import { AddPostConnection } from "../../Apis/HubsConnection/PostConnection/PostConnections";
 
 
 
 export default function PostAdd({UserName})
 {
     const [selectImage,setSelectImage] = useState(null);
+    const [postContent,setPostContent] = useState('')
     
     const handleRemoveImage = () =>{
         setSelectImage(null);
@@ -21,49 +25,49 @@ export default function PostAdd({UserName})
             aspect: [16,9],
             quality: 1,
         });
-        console.log(result);
+        console.log(result.assets[0].uri);
         
         if (!result.canceled) {
         setSelectImage(result.assets[0].uri);
     }
+    }
 
     
-
-    }
     const avatar = require("../../assets/facebook.png");
     return (
         <View style={stylePostAdd.PostAdd}>
+            <View>
+
             <View style={stylePostAdd.ContainerHeader}>
                 <View style={stylePostAdd.ContainerInfomation}>
                     <Image style={stylePostAdd.imageAvatar} source={avatar} ></Image>
                     <Text style={stylePostAdd.UserName}>{UserName}</Text>
                 </View>
+                <View>
+                    <Button onPress={() => {AddPostConnection({idGroup:null,postContent:postContent})}} title="Post"></Button> 
+                </View>
             </View>
-            
+            {/* onPress ={PostAdd} */}
             <View style={stylePostAdd.ViewInput} >
                 <TextInput
-                    
+                    onChangeText={text => setPostContent(text)}
                     placeholder="What's on your mind, UserName"
                     multiline
                     numberOfLines={5}
                     style={stylePostAdd.input}
                     />            
             </View>
-            {console.log("day nx",selectImage)}
                 <View style={stylePostAdd.ContainerListImage}>
                     {selectImage &&  <ItemImageList onPress={handleRemoveImage} source={selectImage}/>}
                 </View>
-                
+            </View>
             <View style={stylePostAdd.ContainerButtons}>
                 <View style={stylePostAdd.ContainerButtonIcon}>
                     <Pressable onPress={pickImage}>
-                        <ButtonIcon nameIcon={"image"} ></ButtonIcon>
+                        <ButtonIcon nameIcon={"image"} size={30} ></ButtonIcon>
                     </Pressable>
-                    <ButtonIcon nameIcon={"camera"} ></ButtonIcon>
-                    <ButtonIcon nameIcon={"location"} ></ButtonIcon>
-                </View>
-                <View>
-                        <Button title="Post"></Button>
+                    <ButtonIcon nameIcon={"camera"} size={30} ></ButtonIcon> 
+                    <ButtonIcon nameIcon={"location"} size={30} ></ButtonIcon> 
                 </View>
             </View>
         </View>
@@ -72,8 +76,11 @@ export default function PostAdd({UserName})
 
 const stylePostAdd = StyleSheet.create({
     PostAdd:{
+        flex:1,
         backgroundColor:"white",
-        marginVertical:StatusBar.currentHeight,
+        flexDirection:"collumn",
+        justifyContent:"center",
+        marginTop:StatusBar.currentHeight,
         padding: 20,
         borderRadius:16,
         shadowColor:"Black", 
@@ -82,7 +89,7 @@ const stylePostAdd = StyleSheet.create({
         paddingHorizontal:8,  
         flexDirection:"row",
         justifyContent:"space-between",
-        alignItems:"center"
+        // alignItems:"center"
     },
     ContainerInfomation:{
         flexDirection:"row",
@@ -133,8 +140,6 @@ const stylePostAdd = StyleSheet.create({
         marginVertical:8,
     },
     buttonContainerIcon:{
-        
-       
         flexDirection:"row",
         columnGap:10,
     },

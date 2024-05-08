@@ -1,4 +1,4 @@
-import { View,TextInput, StyleSheet ,Text, Button } from "react-native"
+import { View,TextInput, StyleSheet ,Text, Button,Pressable } from "react-native"
 
 export default function RegisterForm ()
 {
@@ -28,6 +28,13 @@ export default function RegisterForm ()
                 />
                 <View style={styleFormLogin.ContainerButton}>
                     <Button title="Register"></Button>
+                </View>
+                <View style={{padding:8,flexDirection:"row",justifyContent:"flex-end"}}>
+                        <Text style={{fontSize:12}}>Has account Already?  
+                        </Text>
+                        <Pressable onPress={() => props.navigation.navigate("Login")}>
+                            <Text style={{fontSize:12,color:"rgb(220, 76, 100)"}}> Press here</Text>
+                        </Pressable>
                 </View>
             </View>
         </View>
@@ -72,7 +79,7 @@ const styleFormLogin =  StyleSheet.create({
         paddingVertical:10,
     },
     ContainerButton:{
-        paddingVertical:20,
+        paddingTop:20,
     },
     button:{
         borderRadius:8

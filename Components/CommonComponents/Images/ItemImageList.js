@@ -1,10 +1,10 @@
-import { StyleSheet,Image,View, Pressable, } from "react-native"
+import { StyleSheet,Image,View, Pressable } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import IconRemove from "../Icons/IconRemove";
 export default function ItemImageList({source,onPress})
 {
     return(
-        <View style={styleImage.Container}>
+        <View>
             
             <View style={styleImage.SelectedImage}>
                 <Image style={styleImage.SelectedImage} source={{uri:source}}/>
@@ -21,10 +21,9 @@ export default function ItemImageList({source,onPress})
 }
 
 const styleImage = StyleSheet.create({
-    Container:{
-        
-    },
+
     SelectedImage:{
+        
         height:70,
         width:70,
         borderRadius:8,

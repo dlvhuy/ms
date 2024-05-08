@@ -1,7 +1,26 @@
-import { View,TextInput, StyleSheet ,Text, Button } from "react-native"
+import { View,TextInput, StyleSheet ,Text, Button,Pressable } from "react-native"
 import { postLoginData, postLoginDataAxios } from "../../Apis/SignIn_SignUp/LoginAPI";
-export default function LogInForm ()
+import { useEffect,useReducer,useState } from "react";
+import { PostReducer2, initPostState2 } from "../../Redux/Reducers/PostReducer/PostReducer2";
+export default function LogInForm (props)
 {
+    const [loginInputText,setLoginInputText] = useState({UserName:'',PassWord:''})
+    const [state,dispatch] = useReducer(PostReducer2,initPostState2)
+
+    const handleSetUserName = (text) =>{
+        setLoginInputText(preState =>({
+            ...loginInputText,
+            UserName:text
+        }))
+    }
+    const handleSetPassword = (text) =>{
+        setLoginInputText(preState =>({
+            ...loginInputText,
+            PassWord:text
+        }))
+    }
+  
+    
     return (
         <View style={styleFormLogin.containerForm}>
             
@@ -11,15 +30,26 @@ export default function LogInForm ()
                 </View>
 
                 <Text style={styleFormLogin.label}>User Name</Text>
-                <TextInput style={styleFormLogin.input} placeholder="User Name"/>
+                <TextInput
+                onChangeText={text => handleSetUserName(text)}
+                 style={styleFormLogin.input}
+                 placeholder="User Name"/>
                 <Text style={styleFormLogin.label}>Password</Text>
                 <TextInput
+                onChangeText={text => handleSetPassword(text)}
                 style={styleFormLogin.input}
                 placeholder="Password"
                 secureTextEntry
                 />
                 <View style={styleFormLogin.ContainerButton}>
-                    <Button onPress={postLoginData} style={styleFormLogin.button} title="Login"></Button>
+                    <Button onPress={() =>{postLoginData(props,loginInputText,dispatch)}} style={styleFormLogin.button} title="Login"></Button>
+                </View>
+                <View style={{padding:8,flexDirection:"row",justifyContent:"flex-end"}}>
+                        <Text style={{fontSize:12}}>Don't have an account?  
+                        </Text>
+                        <Pressable onPress={() => props.navigation.navigate("Register")}>
+                            <Text style={{fontSize:12,color:"rgb(220, 76, 100)"}}> Register</Text>
+                        </Pressable>
                 </View>
             </View>
         </View>
@@ -63,7 +93,7 @@ const styleFormLogin =  StyleSheet.create({
         paddingVertical:10,
     },
     ContainerButton:{
-        paddingVertical:20,
+       paddingTop:15
     }
 
 });

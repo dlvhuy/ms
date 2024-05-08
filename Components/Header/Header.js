@@ -26,7 +26,6 @@ export default function Header({IsMainHeader})
 
 const styleHeader= StyleSheet.create({
     container:{
-        
         alignItems:"center",
         justifyContent:"space-between",
         paddingHorizontal:20,
@@ -35,9 +34,8 @@ const styleHeader= StyleSheet.create({
         borderTopLeftRadius:8,
         maxHeight:50,
         backgroundColor:"white",
-        height:40
-        
-        
+        height:40,
+        borderBottomWidth:0.4,
     },
     HeaderText:{
         fontSize:25,

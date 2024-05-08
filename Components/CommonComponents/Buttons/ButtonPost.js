@@ -2,21 +2,23 @@ import { Button,StyleSheet,Text, TouchableHighlight, TouchableOpacity, View } fr
 import FontAweSome from "@expo/vector-icons/FontAwesome"
 
 
-export default function ButtonPost({buttonIcon,buttonTitle})
+export default function ButtonPost({buttonIcon,buttonTitle,onPress})
 {
+    
 
     return (
         <View style={buttonPost.container}>
-            <TouchableOpacity
-                activeOpacity={0.6}
-                backgroundColor="white"
-                onPress={() =>{ console.log("helo world")}}
-            >
-                <View style={buttonPost.button}>
-                    <FontAweSome style={buttonPost.textAndIcon} name={buttonIcon} size={20}></FontAweSome>
-                    <Text style={buttonPost.textAndIcon}>{buttonTitle}</Text>
-                </View>
-            </TouchableOpacity>
+                    <TouchableHighlight
+                            activeOpacity={0.6}
+                            onPress={onPress}
+                        >
+                    
+                        <View style={buttonPost.button}>
+                            <FontAweSome style={buttonPost.textAndIcon} name={buttonIcon} size={20}></FontAweSome>
+                            <Text style={buttonPost.textAndIcon}>{buttonTitle}</Text>
+                        </View> 
+                    
+            </TouchableHighlight>
         </View>
     )
 };
@@ -37,10 +39,10 @@ const buttonPost = StyleSheet.create({
         alignItems:"center",
         columnGap:8,
         borderRadius:4,
-        backgroundColor:"white"
+
     },
     textAndIcon:{
-        color:"black",
+        color:"gray",
         fontSize:15
     }
 })
