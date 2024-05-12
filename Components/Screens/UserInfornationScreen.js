@@ -1,5 +1,5 @@
 import {View, StyleSheet,StatusBar, ScrollView } from "react-native"
-import Header from "../Header/Header"
+import Header from "../Header_Bottom/Header"
 import ListPost from "../Lists/ListPost"
 import UserInfomation from "../UserInfomation/UserInfomation"
 

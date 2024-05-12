@@ -5,7 +5,7 @@ export default function Header({IsMainHeader})
 {
    if(IsMainHeader)
    {
-    const avatar = require("../../assets/adaptive-icon.png");
+    const avatar = require("../../../assets/adaptive-icon.png");
     return (
         <View style={styleHeader.container}>
             <Text style={styleHeader.HeaderText}>HD SOCIA</Text>
@@ -35,8 +35,9 @@ const styleHeader= StyleSheet.create({
         maxHeight:50,
         backgroundColor:"white",
         height:40,
-        borderBottomWidth:0.4,
+        borderBottomWidth:0.1,
     },
+   
     HeaderText:{
         fontSize:25,
         fontWeight:"bold"

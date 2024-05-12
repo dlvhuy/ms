@@ -1,11 +1,12 @@
 import { Button, StyleSheet,TextInput, View,Image,Text, TouchableOpacity, StatusBar, Pressable  } from "react-native";
 import ButtonIcon from "../CommonComponents/Buttons/ButtonIcon";
 import * as ImagePicker from 'expo-image-picker'
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
 import { Test,HubConnections } from "../../Apis/HubsConnection/Hubs";
 import { AddPost } from "../../Apis/Posts/AllPosts";
 import { AddPostConnection } from "../../Apis/HubsConnection/PostConnection/PostConnections";
+import { PostContext } from "../../Contexts/PostProvider";
 
 
 
@@ -13,6 +14,7 @@ export default function PostAdd({UserName})
 {
     const [selectImage,setSelectImage] = useState(null);
     const [postContent,setPostContent] = useState('')
+    const [state,dispatch] = useContext(PostContext)
     
     const handleRemoveImage = () =>{
         setSelectImage(null);
@@ -44,7 +46,7 @@ export default function PostAdd({UserName})
                     <Text style={stylePostAdd.UserName}>{UserName}</Text>
                 </View>
                 <View>
-                    <Button onPress={() => {AddPostConnection({idGroup:null,postContent:postContent})}} title="Post"></Button> 
+                    <Button onPress={() => {AddPostConnection({idGroup:null,postContent:postContent},dispatch)}} title="Post"></Button> 
                 </View>
             </View>
             {/* onPress ={PostAdd} */}

@@ -3,9 +3,9 @@ import ButtonIcon from "../CommonComponents/Buttons/ButtonIcon";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
 import * as ImagePicker from 'expo-image-picker'
 import { useState,useReducer, useEffect, useContext } from "react";
-import { CommentReducer,InitCommentState,addComment } from "../../Redux/Reducers/CommentReducer/CommentReducer";
+import { CommentReducer,InitCommentState,addComment } from "../../Reducers/CommentReducer/CommentReducer";
 import MyTextInput from "../CommonComponents/Inputs/MyTextInput";
-import { CommentContext } from "../../Contexts/CommentContext";
+import CommentProvider from "../../Contexts/CommentProvider";
 
 export default function CommentAdd()
 {

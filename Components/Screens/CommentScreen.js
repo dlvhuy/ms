@@ -1,7 +1,7 @@
 import { FlatList, StatusBar, StyleSheet, View,KeyboardAvoidingView, KeyboardAvoidingViewBase } from "react-native";
 import CommentAdd from "../Comments/CommentAdd";
 import ListComment from "../Lists/ListComment";
-import Header from "../Header/Header";
+import Header from "../Header_Bottom/Header";
 
 
 export default function CommentScreen()

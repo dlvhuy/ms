@@ -4,8 +4,8 @@ import { useState,useCallback, useReducer, useEffect } from "react";
 import FontAweSome from "@expo/vector-icons/FontAwesome"
 import ButtonIconPress from "../CommonComponents/Buttons/ButtonIconPress";
 import CommentScreen from "../Screens/CommentScreen";
-import CommentProvider from "../../Contexts/CommentContext";
-import { CommentReducer, InitCommentState, getComments } from "../../Redux/Reducers/CommentReducer/CommentReducer";
+import CommentProvider from "../../Contexts/CommentProvider";
+import { CommentReducer, InitCommentState, getComments } from "../../Reducers/CommentReducer/CommentReducer";
 export default function Post({Post,onPressHeartButton})
 {
     const [listComment,setListComment] = useState([])
@@ -46,7 +46,7 @@ export default function Post({Post,onPressHeartButton})
                     <Text style={stylePost.UserName}>{Post.userName}</Text>
                 </View>
                 <View style={stylePost.ContainerStatusAndConTentImage}>
-                        <Text
+                        <Text style={{paddingHorizontal:20}}
                         numberOfLines={numOfLines == 0 ? null : loadMore ? numOfLines : 5} 
                         onTextLayout={onTextLayout} >
                         {Post.postContent}
@@ -64,11 +64,18 @@ export default function Post({Post,onPressHeartButton})
                     <Image style={stylePost.ImageContent} source={avatar}/>    
                 </View>
                 <View style={stylePost.ContainerLikesInfo}>
-                        <FontAweSome name="heart" color={"gray"} size={13}></FontAweSome>
-                        <Text style={{color:"gray"}}>10 likes</Text>
+                    {
+                        (Post.likePost.totalLikes == 0) ?
+                        <View style={{maxHeight:20}}/>
+                        :
+                        <View style={{maxHeight:20, flexDirection:"row",justifyContent:"flex-start",alignItems:"center",gap:5}}>
+                            <FontAweSome name="heart" color={"gray"} size={13}></FontAweSome>
+                            <Text style={{color:"gray"}}>{Post.likePost.totalLikes} Likes</Text>
+                        </View>
+                    }
                 </View>
                 <View style={stylePost.ContainerButton}>
-                    <ButtonIconPress buttonIcon={"heart"} buttonTitle={"Like"} onPress={onPressHeartButton} isLike={false}/>
+                    <ButtonIconPress buttonIcon={"heart"} buttonTitle={"Like"} onPress={onPressHeartButton} isLike={Post.likePost.isLike}/>
                     <ButtonPost buttonIcon={"comment"} buttonTitle={"Comment"} onPress={() => openModalComment(Post.idPost)}/>
                     <ButtonPost buttonIcon={"share"} buttonTitle={"Share"} />
                 </View>
@@ -96,15 +103,18 @@ const stylePost = StyleSheet.create({
         
     },
     Post:{
-        backgroundColor:"white",
-        marginVertical:10,
-        padding: 20,
-        borderRadius:16,
+        backgroundColor:"f5f5f5",
+        borderRadius:4,
         shadowColor:"Black", 
+        paddingVertical:10,
+        marginVertical:5,
+        borderWidth:0.1,
+        borderColor:"#f5f5f5"
     },
     ContainerInfomation:{
         flexDirection:"row",
-        justifyContent:"flex-start"
+        justifyContent:"flex-start",
+        paddingHorizontal:20
     },
     imageAvatar:{
         width:50,
@@ -121,9 +131,7 @@ const stylePost = StyleSheet.create({
     ContainerLikesInfo:{
         gap:5,
         marginTop:10,
-        flexDirection:"row",
-        justifyContent:"flex-start",
-        alignItems:"center"
+        paddingHorizontal:20
     },
     ContainerStatusAndConTentImage:{
         flexDirection:"collumn",

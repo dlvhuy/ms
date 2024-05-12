@@ -2,8 +2,9 @@ import { save } from "../../expoSecure/Secure";
 import { API_URL } from "..";
 import { AllPosts } from "../Posts/AllPosts";
 import { startConnection } from "../HubsConnection/Connections/Connections";
-import { useReducer } from "react";
-import { getPosts } from "../../Redux/Reducers/PostReducer/PostReducer2";
+
+import { getPosts } from "../../Reducers/postSlice";
+import store from "../../store";
 
 
 // tạo nơi an toàn để có thể lưu jwt
@@ -29,17 +30,15 @@ export const postLoginData = async (probs,loginInputText,dispatch) => {
         const json = await response.json();
         
         if(json.success == true){
-            
+            console.log(json.token)
             save("JWT_TOKEN",json.token)
 
+            probs.navigation.navigate("Home")
             startConnection().then(() =>{
                 
             })
+            AllPosts()
             
-            AllPosts().then((response) => 
-                dispatch(getPosts(response))
-            )
-            probs.navigation.navigate("Home")
         }
         else {
             console.log(json.Message)

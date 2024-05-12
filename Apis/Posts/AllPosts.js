@@ -1,15 +1,23 @@
 import { API_URL } from "..";
-import { getPosts } from "../../Redux/Reducers/PostReducer/PostReducer2";
-import Store from "../../Redux/Store";
+import { getPosts } from "../../Reducers/PostAction";
+
 import { getValueFor } from "../../expoSecure/Secure";
+import store from "../../store";
+import { PostSlice } from "../../Reducers/postSlice";
 
-
-export const AllPosts = async () =>{
+export const AllPosts = async (dispatch) =>{
     try {
-        const response = await fetch(`${API_URL}/api/Post`)
+        const response = await fetch(`${API_URL}/api/Post`,{
+            method:'Get',
+            headers:{
+                "Content-Type": 'application/json',
+                'Authorization': `Bearer ${getValueFor("JWT_TOKEN")}`, 
+            },
+        });
+
         const json = await response.json();
-       
-        Store.dispatch(getPosts(json))
+        
+        store.dispatch(PostSlice.actions.getPosts(json))
         
     }
     catch(error)

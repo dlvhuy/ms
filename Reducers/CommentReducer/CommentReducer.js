@@ -1,4 +1,4 @@
-import dataComment from "../../../Data/dulieuComment.json"
+import dataComment from "../../Data/dulieuComment.json"
 
 export const InitCommentState = {
     Comments:[],

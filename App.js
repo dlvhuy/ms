@@ -1,38 +1,24 @@
 
-import ListPost from './Components/Lists/ListPost';
-import Header from './Components/Header/Header';
-import PostAdd from './Components/Posts/PostAdd';
-import HomeScreen from './Components/Screens/Homescreen';
-import TestComponent from './Components/Test/TestComponent'
-import ButtonIcon from './Components/CommonComponents/Buttons/ButtonIcon';
-import ItemImageList from './Components/CommonComponents/Images/ItemImageList';
-import IconRemove from './Components/CommonComponents/Icons/IconRemove';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
-import LogInForm from './Components/Forms/LogInForm';
-import RegisterForm from './Components/Forms/RegisterForm';
-import Post from './Components/Posts/Post';
-import Comment from './Components/Comments/Comment';
-import CommentAdd from './Components/Comments/CommentAdd';
-import CommentScreen from './Components/Screens/CommentScreen';
+import Bottom from './Components/Header_Bottom/Bottom';
+import store from './store';
+import PostProvider from './Contexts/PostProvider';
+import Route from './Route/Route';
 import { Provider } from 'react-redux';
-import Store from './Redux/Store';
+import { AppRegistry } from 'react-native';
+import {name as appName} from "./app.json"
 export default function App() {
-  const Stack = createNativeStackNavigator();
+ 
   return(
-    // <Provider store={Store}>
-      // {/* <NavigationContainer>
-      //   <Stack.Navigator initialRouteName="Login">
-      //     <Stack.Screen name="Login" component={LogInForm} options={{headerShown:false}}></Stack.Screen>
-      //     <Stack.Screen name="Register" component={RegisterForm} options={{headerShown:false}}></Stack.Screen>
-      //     <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}}></Stack.Screen>
-      //     <Stack.Screen name="AddPost" component={PostAdd} options={{headerShown:false}}></Stack.Screen>
-      //     </Stack.Navigator>
-      //   </NavigationContainer> */
-      //   /* </Provider> */}
+    AppRegistry.registerComponent("main", ()=>{
+    <Provider store={store}>
+              <Route></Route>
+    </Provider>
+    })
+    
+          // <Bottom></Bottom>
+       
 
-       <PostAdd></PostAdd>
+      //  <LogInForm></LogInForm>
    
   )
    

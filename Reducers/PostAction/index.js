@@ -1,12 +1,12 @@
-export const IS_LIKE = 'Is_like'
+export const UPDATE_LIKE = 'Update_Like'
 export const ADD_POST = 'Add_Post'
 export const GET_POSTS = 'Get_Posts'
 
-export const isLike = (payload) =>{
-    
+export const updateLike = (object,idPost) =>{
+   
     return {
-        type: IS_LIKE,
-        payload
+        type: UPDATE_LIKE,
+        payload:{object,idPost}
     }
 }
 

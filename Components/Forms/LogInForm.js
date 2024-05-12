@@ -1,12 +1,14 @@
 import { View,TextInput, StyleSheet ,Text, Button,Pressable } from "react-native"
 import { postLoginData, postLoginDataAxios } from "../../Apis/SignIn_SignUp/LoginAPI";
-import { useEffect,useReducer,useState } from "react";
-import { PostReducer2, initPostState2 } from "../../Redux/Reducers/PostReducer/PostReducer2";
+import { useContext, useEffect,useReducer,useState } from "react";
+import PostReducer2,{ initPostState2 } from "../../Reducers/postSlice";
+import { PostContext } from "../../Contexts/PostProvider";
 export default function LogInForm (props)
 {
     const [loginInputText,setLoginInputText] = useState({UserName:'',PassWord:''})
-    const [state,dispatch] = useReducer(PostReducer2,initPostState2)
-
+    
+    // const [state,dispatch] = useContext(PostContext)
+    
     const handleSetUserName = (text) =>{
         setLoginInputText(preState =>({
             ...loginInputText,
@@ -42,7 +44,7 @@ export default function LogInForm (props)
                 secureTextEntry
                 />
                 <View style={styleFormLogin.ContainerButton}>
-                    <Button onPress={() =>{postLoginData(props,loginInputText,dispatch)}} style={styleFormLogin.button} title="Login"></Button>
+                    <Button onPress={() =>{postLoginData(props,loginInputText)}} style={styleFormLogin.button} title="Login"></Button>
                 </View>
                 <View style={{padding:8,flexDirection:"row",justifyContent:"flex-end"}}>
                         <Text style={{fontSize:12}}>Don't have an account?  

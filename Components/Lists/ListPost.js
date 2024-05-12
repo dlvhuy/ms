@@ -1,22 +1,31 @@
-import data from "../../Data/dulieu.json"
-import { View,StyleSheet, ScrollView, FlatList,require } from "react-native"
+
+import { View,StyleSheet, ScrollView} from "react-native"
 import Post from "../Posts/Post"
-
-
-
+import { useContext } from "react"
+import { PostContext } from "../../Contexts/PostProvider"
+import { UpdateLikePostConnection } from "../../Apis/HubsConnection/PostConnection/PostConnections"
+import { connection } from "../../Apis/HubsConnection/Hubs"
+import { updateLike } from "../../Reducers/PostAction"
+import { postSlice } from "../../Reducers/postSlice"
+import { useSelector } from "react-redux"
+r
 export default function ListPost()
 {   
-    
+    // const [state,dispatch] = useContext(PostContext);
+    const listPosts = useSelector((state)=> state.Post.Posts)
     return(
         
             <ScrollView>
                 <View style={styleListPost.ContainerPost}>
-                        
-                        {postContext.state.Posts.map((item) =>{ return( 
+
+                        {listPosts.map((item) =>{ return( 
                             <Post 
-                            key={item.IdPost}
+                            key={item.idPost}
                             Post={item}
-                            onPressHeartButton={() => console.log("helloworld")}
+                            onPressHeartButton={() => {
+                                UpdateLikePostConnection(item.idPost)
+                                
+                             }}
                             ></Post>
                         )})}
                 </View>
@@ -29,7 +38,6 @@ const styleListPost = StyleSheet.create({
     ContainerPost:{
         flex:1,
         justifyContent:"center",
-        paddingHorizontal:20,
-        backgroundColor:"#f5f5f5"
+        backgroundColor:"white"
     },
 })
