@@ -3,9 +3,7 @@ import ButtonIcon from "../CommonComponents/Buttons/ButtonIcon";
 import * as ImagePicker from 'expo-image-picker'
 import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
-import { Test,HubConnections } from "../../Apis/HubsConnection/Hubs";
-import { AddPost } from "../../Apis/Posts/AllPosts";
-import { AddPostConnection } from "../../Apis/HubsConnection/PostConnection/PostConnections";
+import { AddPostConnection } from "../../Apis/HubsConnection/Connections/PostConnection";
 import { PostContext } from "../../Contexts/PostProvider";
 
 
@@ -81,10 +79,8 @@ const stylePostAdd = StyleSheet.create({
         flex:1,
         backgroundColor:"white",
         flexDirection:"collumn",
-        justifyContent:"center",
-        marginTop:StatusBar.currentHeight,
+        justifyContent:"flex-start",
         padding: 20,
-        borderRadius:16,
         shadowColor:"Black", 
     },
     ContainerHeader:{

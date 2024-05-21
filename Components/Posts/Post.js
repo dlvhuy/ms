@@ -1,26 +1,31 @@
-import { View, Image,Text, StyleSheet, Touchable, Pressable, Modal } from "react-native"
+import { View, Image,Text, StyleSheet, Touchable, Pressable, Modal, TouchableOpacity } from "react-native"
 import ButtonPost from "../CommonComponents/Buttons/ButtonPost";
-import { useState,useCallback, useReducer, useEffect } from "react";
+import { useState,useCallback, useReducer, useEffect, useContext } from "react";
 import FontAweSome from "@expo/vector-icons/FontAwesome"
 import ButtonIconPress from "../CommonComponents/Buttons/ButtonIconPress";
 import CommentScreen from "../Screens/CommentScreen";
 import CommentProvider from "../../Contexts/CommentProvider";
-import { CommentReducer, InitCommentState, getComments } from "../../Reducers/CommentReducer/CommentReducer";
+import { getUserInfo } from "../../Apis/FetchConnection/UserInfo/UserInfo";
+
+import { CommentPostConnection } from "../../Apis/HubsConnection/Connections/CommentConnection";
+import { useNavigation } from "@react-navigation/native";
+import { UserInfoContext } from "../../Contexts/UserInfoProvider";
+import { PostContext } from "../../Contexts/PostProvider";
 export default function Post({Post,onPressHeartButton})
 {
     const [listComment,setListComment] = useState([])
     const [numOfLines,setNumOfLines] = useState(0);
     const [loadMore,setLoadMore] = useState(false);
     const [isModalVisible,setIsModalVisible] = useState(false);
-
-    const [stateComment,dispatchComment] = useReducer(CommentReducer,InitCommentState)
-
+    const [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext)
+    const [statePost,dispatchPost] = useContext(PostContext);
     const avatar = require("../../assets/adaptive-icon.png");
 
     const onTextLayout = useCallback(e => {
         if(numOfLines == 0)
             setNumOfLines(e.nativeEvent.lines.length);
     });
+
     
     const onLoadMoreToggle = () => {
         setLoadMore(!loadMore);
@@ -28,22 +33,22 @@ export default function Post({Post,onPressHeartButton})
     }
     const openModalComment = (IdPost) =>{
         
-        dispatchComment(getComments(IdPost))
         setIsModalVisible(true)
+        CommentPostConnection(isModalVisible,IdPost)
         
     }
-    useEffect(() =>{
-        
-        setListComment(stateComment.Comments)
-        if(listComment == [])
-            return
-    },[stateComment.Comments])
+    const navigation = useNavigation()
     return(
        
             <View style={stylePost.Post}>
                 <View style={stylePost.ContainerInfomation}>
-                    <Image style={stylePost.imageAvatar} source={avatar} ></Image>
-                    <Text style={stylePost.UserName}>{Post.userName}</Text>
+                    <Image style={stylePost.imageAvatar} source={{uri:Post.avatarImage}} ></Image>
+                    <TouchableOpacity onPress={() => {
+                        getUserInfo(Post.idUser,navigation,dispatchUserInfo,dispatchPost)
+                        
+                        }}>
+                        <Text style={stylePost.UserName}>{Post.userName}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={stylePost.ContainerStatusAndConTentImage}>
                         <Text style={{paddingHorizontal:20}}
@@ -81,10 +86,10 @@ export default function Post({Post,onPressHeartButton})
                 </View>
                 <Modal
                  visible={isModalVisible}
-                 onRequestClose={() => setIsModalVisible(false)}
+                 onRequestClose={() => {setIsModalVisible(false),CommentPostConnection(isModalVisible,Post.idPost)}}
                  animationType="fade"
                  >
-                    <CommentProvider IdPost={Post.IdPost} listComment={listComment}>
+                    <CommentProvider IdPost={Post.idPost}>
                         <CommentScreen />
                     </CommentProvider>
                 </Modal>
@@ -103,7 +108,8 @@ const stylePost = StyleSheet.create({
         
     },
     Post:{
-        backgroundColor:"f5f5f5",
+        backgroundColor:"white",
+        
         borderRadius:4,
         shadowColor:"Black", 
         paddingVertical:10,

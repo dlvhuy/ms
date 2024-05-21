@@ -1,8 +1,7 @@
-import { updateLike, addPost } from "../../../Reducers/PostAction";
-import { connection } from "../Hubs";
+import { updateLike, addPost } from "../../../../Reducers/PostAction";
+import { connection } from "../../Hubs";
 
-import { postSlice } from "../../../Reducers/postSlice";
-import store from "../../../store";
+
 export const AddPostConnection = async ({idGroup,postContent},dispatch) =>{
 
     try{
@@ -28,11 +27,8 @@ export const AddPostConnection = async ({idGroup,postContent},dispatch) =>{
 
 export const UpdateLikePostConnection = async(idPost) =>{
     console.log(idPost)
-    try{
-        
+    try{     
         await connection.invoke("UpdateLikePost",{idPost:idPost})
-
-        
     }
     catch(e)
     {
@@ -40,17 +36,7 @@ export const UpdateLikePostConnection = async(idPost) =>{
     }
 }
 
-connection.on("ReceiveMessage",(likePost) =>{
-    if(likePost.success)
-        {
-            console.log(likePost)
-            store.dispatch(postSlice.actions.updateLikePost(likePost.object,idPost))
-            
-        }
-        else{
-            console.log("post Null")
-        }
- });
+
 
 connection.on("MessageError",(string) =>{
     console.log(string)

@@ -1,9 +1,8 @@
-import { API_URL } from "..";
-import { getPosts } from "../../Reducers/PostAction";
+import { API_URL } from "../..";
+import { getPosts } from "../../../Reducers/PostAction";
 
-import { getValueFor } from "../../expoSecure/Secure";
-import store from "../../store";
-import { PostSlice } from "../../Reducers/postSlice";
+import { getValueFor } from "../../../expoSecure/Secure";
+
 
 export const AllPosts = async (dispatch) =>{
     try {
@@ -17,7 +16,7 @@ export const AllPosts = async (dispatch) =>{
 
         const json = await response.json();
         
-        store.dispatch(PostSlice.actions.getPosts(json))
+        dispatch(getPosts(json))
         
     }
     catch(error)

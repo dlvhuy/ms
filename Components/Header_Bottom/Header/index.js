@@ -1,4 +1,4 @@
-import { StyleSheet, View,Text,Image } from "react-native"
+import { StyleSheet, View,Text,Image, StatusBar } from "react-native"
 import FontAwsome from "@expo/vector-icons/FontAwesome"
 import FontAwsome5 from "@expo/vector-icons/FontAwesome5"
 export default function Header({IsMainHeader})
@@ -18,7 +18,7 @@ export default function Header({IsMainHeader})
     else{
         return(
         <View style={styleHeader.container}>
-            <FontAwsome name="arrow-left" size={20}></FontAwsome>
+            <FontAwsome color={"gray"} name="arrow-left" size={20}></FontAwsome>
         </View>
         )
     }
@@ -32,15 +32,15 @@ const styleHeader= StyleSheet.create({
         flexDirection:"row",
         borderTopRightRadius:8,
         borderTopLeftRadius:8,
-        maxHeight:50,
+        height:50,
         backgroundColor:"white",
-        height:40,
         borderBottomWidth:0.1,
     },
    
     HeaderText:{
         fontSize:25,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        color:"black"
     },
     imageAvatar:{
         width:40,
@@ -48,5 +48,6 @@ const styleHeader= StyleSheet.create({
         borderRadius:25,
         borderWidth:1,
         marginRight:8,
+        
     },
 })

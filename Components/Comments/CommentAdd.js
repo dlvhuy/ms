@@ -2,16 +2,16 @@ import { KeyboardAvoidingView, StyleSheet, TextInput, View } from "react-native"
 import ButtonIcon from "../CommonComponents/Buttons/ButtonIcon";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
 import * as ImagePicker from 'expo-image-picker'
-import { useState,useReducer, useEffect, useContext } from "react";
-import { CommentReducer,InitCommentState,addComment } from "../../Reducers/CommentReducer/CommentReducer";
+import { useState, useContext } from "react";
 import MyTextInput from "../CommonComponents/Inputs/MyTextInput";
-import CommentProvider from "../../Contexts/CommentProvider";
+import {CommentContext} from "../../Contexts/CommentProvider";
+import { AddCommentPostConnection } from "../../Apis/HubsConnection/Connections/CommentConnection";
 
 export default function CommentAdd()
 {
-    const [state,dispatch] = useReducer(CommentReducer,InitCommentState)
-    const CommentContent = useContext(CommentContext)
-    const [comment,setComment] = useState({IdComment:1000,UserName:"Helloworld",CommentContent:"",IdPost:CommentContent.IdPost})
+    
+    const [state,dispatch,IdPost] = useContext(CommentContext)
+    const [comment,setComment] = useState({CommentContent:"",IdPost:IdPost})
     
     const [selectImage,setSelectImage] = useState(null);
 
@@ -48,7 +48,7 @@ export default function CommentAdd()
                 :
                 <ButtonIcon size={25} nameIcon={"image"} onPress={pickImage}/>
             }
-                    <ButtonIcon size={25} nameIcon={"send"} onPress={() => dispatch(addComment(comment))}/>
+                    <ButtonIcon size={25} nameIcon={"send"} onPress={() => AddCommentPostConnection(comment)}/>
             </View>
         </View>
             

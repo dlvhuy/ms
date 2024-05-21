@@ -2,21 +2,22 @@ import dataComment from "../../Data/dulieuComment.json"
 
 export const InitCommentState = {
     Comments:[],
-    AllComments:dataComment
+    
 }
 
 export const ADD_COMMENT = 'Add_Comment'
 export const GET_COMMENTS = 'Get_Comment'
 
-export const addComment = (comment) =>{
+export const addComment = (payload) =>{
     
     return {
         type: ADD_COMMENT,
-        payload: comment
+        payload
     }
 }
 
 export const getComments = (payload) =>{
+
     return {
         type:GET_COMMENTS,
         payload
@@ -25,33 +26,25 @@ export const getComments = (payload) =>{
 
 export const CommentReducer = (state,action) =>{
 
-    let newState;
+    
 
     switch(action.type)
     {
         case GET_COMMENTS:
-            const DataComment = [...state.AllComments] 
-            const filerComment = DataComment.filter((item) =>{
-                if(item.IdPost == action.payload)
-                    return true
-                return false
-            })
-
-            newState = {
+            return{
                 ...state,
-                Comments:filerComment
+                Comments:action.payload
             }
-            break;
             
         case ADD_COMMENT:
-            newState = {
+            return{
                 ...state,
-                AllComments:[...state.AllComments,action.payload]
+                Comments:[...state.Comments,action.payload]
             }
-            break;
+           
         default:
             throw new Error("Invalid action")
     }
-    console.log("newstate: ",newState)
-    return newState;
+    
+
 }

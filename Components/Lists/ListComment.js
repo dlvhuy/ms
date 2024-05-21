@@ -1,20 +1,25 @@
-import { ScrollView,StyleSheet,View,KeyboardAvoidingView } from "react-native";
+import { ScrollView,StyleSheet,View,KeyboardAvoidingView, Text } from "react-native";
 import dataComment from "../../Data/dulieuComment.json"
 import Comment from "../Comments/Comment";
 import { useContext } from "react";
 import { CommentContext } from "../../Contexts/CommentProvider";
 export default function ListComment()
 {   
-    const commentContent = useContext(CommentContext)
+    const [state,dispatch,IdPost]= useContext(CommentContext)
     return(
         <ScrollView>
             <View style={styleListPost.ContainerComment}>
-                {commentContent.comments.map((item) =>{ return(
-                    <Comment
-                    key={item.IdComment}
-                    Comment={item} 
-                    />
-                )})}
+                {
+                    state.Comments == [] ?
+                    <Text>Không có comment</Text>
+                    :    
+                    state.Comments.map((item) =>{ return(
+                        <Comment
+                        key={item.IdComment}
+                        Comment={item} 
+                        />
+                    )})
+                }
             </View>
         </ScrollView>
     )

@@ -1,16 +1,23 @@
 import { StyleSheet, View } from "react-native"
 import ButtonIcon from "../../CommonComponents/Buttons/ButtonIcon"
 import { useNavigation } from "@react-navigation/native"
+import { getUserInfo } from "../../../Apis/FetchConnection/UserInfo/UserInfo"
+import { useContext } from "react"
+import { UserInfoContext } from "../../../Contexts/UserInfoProvider"
+import { PostContext } from "../../../Contexts/PostProvider"
 export default Bottom = () =>{
 
     const navigation = useNavigation()
-
+    const [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext)
+    const [statePost,dispatchPost] = useContext(PostContext)
     return(
         <View style={styleBottom.containerBottom}>
             <ButtonIcon nameIcon={"home"} size={30} onPress={() => navigation.navigate("Home")}></ButtonIcon>
-            <ButtonIcon nameIcon={"search"} size={30}></ButtonIcon>
+            <ButtonIcon nameIcon={"search"} size={30} onPress={() => navigation.navigate("Search")}></ButtonIcon>
             <ButtonIcon nameIcon={"add-circle"} size={30} onPress={() => navigation.navigate("AddPost")}></ButtonIcon>
-            <ButtonIcon nameIcon={"person"} size={30} ></ButtonIcon>
+            <ButtonIcon nameIcon={"person"} size={30} onPress={() => {
+                getUserInfo(stateUserInfo.CurrentUserID,navigation,dispatchUserInfo,dispatchPost)
+                }} ></ButtonIcon>
         </View>
     )
 }

@@ -1,26 +1,30 @@
 
-import Bottom from './Components/Header_Bottom/Bottom';
-import store from './store';
+
+
+import { PostContainerImage } from './Components/CommonComponents/Images/PostContainerImage';
 import PostProvider from './Contexts/PostProvider';
+import UserInfoProvider from './Contexts/UserInfoProvider';
 import Route from './Route/Route';
-import { Provider } from 'react-redux';
-import { AppRegistry } from 'react-native';
-import {name as appName} from "./app.json"
+
+
 export default function App() {
  
   return(
-    AppRegistry.registerComponent("main", ()=>{
-    <Provider store={store}>
-              <Route></Route>
-    </Provider>
-    })
+      // <PostProvider>
+      //   <UserInfoProvider>
+      //   <Route></Route>
+      //   </UserInfoProvider>
+      // </PostProvider>
+      <PostContainerImage/>
+    
+    )
     
           // <Bottom></Bottom>
        
 
       //  <LogInForm></LogInForm>
    
-  )
+  
    
 
     

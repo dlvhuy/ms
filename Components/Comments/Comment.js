@@ -5,12 +5,12 @@ export default function Comment({Comment})
     return(
         <View style={styleComment.Container}>
             <View style={styleComment.ContainerImage}>
-                <Image style={styleComment.imageAvatar} source={avatar}/>
+                <Image style={styleComment.imageAvatar} source={{uri:Comment.avatarImage}}/>
             </View>
             <View>
                 <View style={styleComment.ContainerContentComment}>
-                    <Text>{Comment.UserName}</Text>
-                    <Text>{Comment.CommentContent}</Text>
+                    <Text>{Comment.userName}</Text>
+                    <Text>{Comment.contentCommentPost}</Text>
                 </View>
                 <View style={styleComment.ContainerButtonOthers}>
                     <Text>Thích</Text>

@@ -9,7 +9,7 @@ export default function CommentScreen()
     return(
         <View style={styleCommentScreen.ContainerCommentScreen}>
             <ListComment ></ListComment>
-            <CommentAdd></CommentAdd>
+            <CommentAdd idPost></CommentAdd>
         </View>
     )
 }
