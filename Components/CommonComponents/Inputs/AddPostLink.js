@@ -23,7 +23,8 @@ const addPostLinkStyle = StyleSheet.create({
         flexDirection:"row",
         gap:10,
         backgroundColor:"white",
-        marginTop:5
+        paddingVertical:10,
+        borderRadius:8
         
     },
     styleInput:{

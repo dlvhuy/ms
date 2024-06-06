@@ -2,7 +2,8 @@ import { View,TextInput, StyleSheet ,Text, Button,Pressable,Alert } from "react-
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Register } from "../../Apis/FetchConnection/SignIn_SignUp/LoginAPI";
-export default function RegisterForm ()
+import { memo } from "react";
+function RegisterForm ()
 {
     const [registerInputText,setRegisterInputText] = useState({UserName:'',PassWord:'',Email:'',ConfirmPassWord:''})
     const [status,setStatus ] = useState('')
@@ -91,6 +92,7 @@ export default function RegisterForm ()
         </View>
     )
 }
+export default memo(RegisterForm)
 
 const styleFormLogin =  StyleSheet.create({
     containerForm:{

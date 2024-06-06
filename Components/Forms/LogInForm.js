@@ -1,13 +1,10 @@
 import { View,TextInput, StyleSheet ,Text, Button,Pressable } from "react-native"
 import { postLoginData } from "../../Apis/FetchConnection/SignIn_SignUp/LoginAPI";
 import { useContext, useEffect,useReducer,useState } from "react";
-import { PostContext } from "../../Contexts/PostProvider";
-import { UserInfoContext } from "../../Contexts/UserInfoProvider";
-export default function LogInForm (props)
+import { memo } from "react";
+function LogInForm (props)
 {
     const [loginInputText,setLoginInputText] = useState({UserName:'',PassWord:''})
-    
-    const [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext)
     
     const handleSetUserName = (text) =>{
         setLoginInputText(preState =>({
@@ -44,7 +41,7 @@ export default function LogInForm (props)
                 secureTextEntry
                 />
                 <View style={styleFormLogin.ContainerButton}>
-                    <Button onPress={() =>{postLoginData(props,loginInputText,dispatchUserInfo)}} style={styleFormLogin.button} title="Login"></Button>
+                    <Button onPress={() =>{postLoginData(props,loginInputText)}} style={styleFormLogin.button} title="Login"></Button>
                 </View>
                 <View style={{padding:8,flexDirection:"row",justifyContent:"flex-end"}}>
                         <Text style={{fontSize:12}}>Don't have an account?  
@@ -99,3 +96,4 @@ const styleFormLogin =  StyleSheet.create({
     }
 
 });
+export default memo(LogInForm)

@@ -1,9 +1,10 @@
 import { API_URL } from "../..";
 import { getValueFor } from "../../../expoSecure/Secure";
-import { getPosts } from "../../../Reducers/PostAction";
-import { GetSearchItems, GetUserInfo } from "../../../Reducers/UserInfoAction";
-export const getUserInfo = async (idUser,navigation,dispatchUserInfo,dispatchPost) =>{
-   
+import { getPosts } from "../../../ContextRedux/Actions/postActions";
+import { GetSearchItems,GetUserInfo } from "../../../ContextRedux/Actions/userInfoActions";
+import store from "../../../ContextRedux/Store";
+export const getUserInfo = async (idUser,navigation) =>{
+    console.log("day la get UserInfo:",idUser)
     try{
         const responseGetUserInfo = await fetch(
             `${API_URL}/api/UserInfo/${idUser}`,
@@ -14,13 +15,12 @@ export const getUserInfo = async (idUser,navigation,dispatchUserInfo,dispatchPos
                     'Authorization': `Bearer ${getValueFor("JWT_TOKEN")}`
                 },
             });
-            
             const jsonResponseGetUserInfo = await responseGetUserInfo.json();
-            console.log(jsonResponseGetUserInfo)
+           
             if(jsonResponseGetUserInfo.success){
                 const {idUser,isCurrentUser,userDescription,userName,postResponses,coverImage,avatarImage} = jsonResponseGetUserInfo.object;
-                dispatchUserInfo(GetUserInfo(idUser,isCurrentUser,userDescription,userName,coverImage,avatarImage))
-                dispatchPost(getPosts(postResponses))
+                store.dispatch(GetUserInfo(idUser,isCurrentUser,userDescription,userName,coverImage,avatarImage))
+                store.dispatch(getPosts(postResponses))
                 navigation.navigate("UserInfomation")
             }
     }
@@ -29,7 +29,7 @@ export const getUserInfo = async (idUser,navigation,dispatchUserInfo,dispatchPos
     }
 }
 
-export const searchUserInfo = async(searchString,dispatchUserInfo) =>
+export const searchUserInfo = async(searchString) =>
 {
     console.log("day la searchUserInfo: ",searchString)
     try{
@@ -46,12 +46,11 @@ export const searchUserInfo = async(searchString,dispatchUserInfo) =>
                 }),
                
             });
-            
             const jsonResponseSearchUserInfo = await responseSearchUserInfo.json();
             console.log(jsonResponseSearchUserInfo)
             if(jsonResponseSearchUserInfo.success)
             {
-                dispatchUserInfo(GetSearchItems(jsonResponseSearchUserInfo.object))
+                store.dispatch(GetSearchItems(jsonResponseSearchUserInfo.object))
             }
 
     }

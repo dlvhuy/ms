@@ -1,10 +1,9 @@
 import { API_URL } from "../..";
-import { getPosts } from "../../../Reducers/PostAction";
-
+import { getPost2,getPosts } from "../../../ContextRedux/Actions/postActions";
 import { getValueFor } from "../../../expoSecure/Secure";
+import store from "../../../ContextRedux/Store";
 
-
-export const AllPosts = async (dispatch) =>{
+export const AllPosts = async () =>{
     try {
         const response = await fetch(`${API_URL}/api/Post`,{
             method:'Get',
@@ -15,8 +14,8 @@ export const AllPosts = async (dispatch) =>{
         });
 
         const json = await response.json();
-        
-        dispatch(getPosts(json))
+        console.log("day la ALlPosts: ",json)
+        store.dispatch(getPosts(json))
         
     }
     catch(error)
@@ -25,34 +24,42 @@ export const AllPosts = async (dispatch) =>{
     }
 }
 
-export const AddPost = async (postContent) =>{
+export const AddPost = async ({idGroup,postContent,listImage}) =>{
+
         try{
-            console.log(JSON.stringify({
-                idGroup:null,
-                postContent:'string'
-            }))
-        const responseAddPost = await fetch(
-            `${API_URL}/api/Post`,
-            {
-                method:'post',
-                headers:{
-                    'Content-Type':'application/json',
-                    'Authorization': getValueFor("JWT_TOKEN")
-                },
-                body:JSON.stringify({
-                    idGroup:null,
-                    postContent: postContent
-                }),
-            });
-       
-        const jsonf = await responseAddPost.json();
-        console.log(jsonf)
+                const data = []
+                listImage.forEach((item,index) =>{
+                    data.push({fileName:item.uri,urlimageVideo:item.base64})
+                })
+                const responsePost = await fetch(`${API_URL}/api/Post`,{
+                    method:'post',
+                    body:JSON.stringify({
+                        idGroup:null,
+                        postContent:postContent,
+                        postContentRequests:data
+                    }),
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getValueFor("JWT_TOKEN")}`, 
+                    },
+                });
+                const responsePOst = await responsePost.json()
+                console.log("day la Add Post:",responsePOst)
     }
     catch(error){
         console.log(error)
     }
 }
-
+export const GetPost2 = async (idPost,navigation) =>{
+    console.log("day la getPost",idPost)
+    try{
+        store.dispatch(getPost2(idPost))
+        navigation.navigate("PostDetail")
+    }
+    catch(error){
+        console.log(error)
+    }
+}
 export const AddPostInRealTime = async (postContent) =>{
     try{
         

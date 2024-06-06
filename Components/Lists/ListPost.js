@@ -1,18 +1,17 @@
 
 import { View,StyleSheet, ScrollView,Text} from "react-native"
 import Post from "../Posts/Post"
-import { useContext } from "react"
-import { PostContext } from "../../Contexts/PostProvider"
-import { UpdateLikePostConnection } from "../../Apis/HubsConnection/Connections/PostConnection"
 import { AddPostLink } from "../CommonComponents/Inputs/AddPostLink"
+// import { PostImageContainer } from "../CommonComponents/Images/PostImageContainer/PostImageContainer"
+import {connect} from "react-redux"
 
-export default function ListPost({listPost,isCurrentUser = true})
+function ListPost({listPost,isCurrentUser = true})
 {   
+    // const [statePost,dispatchPost] = useContext(PostContext);
     
-    // const listPosts = useSelector((state)=> state.Post.Posts)
-    
+    console.log(listPost)
     return(
-            <ScrollView>
+            <ScrollView style={{backgroundColor:"rgb(240, 240, 240)"}}>
                 {
                     isCurrentUser?
                     <AddPostLink />
@@ -25,39 +24,20 @@ export default function ListPost({listPost,isCurrentUser = true})
                         <Text>Không có danh sách bài viết</Text>
                     </View>
                     :
-                        listPost.map((item) =>{ return( 
+                    listPost.map((item) =>{ return( 
                             <Post 
                             key={item.idPost}
                             Post={item}
-                            onPressHeartButton={() => {
-                                UpdateLikePostConnection(item.idPost)
-                                
-                            }}
-                            ></Post>
+                            isPostScreen={false}
+                            children={null}
+                            >
+                            </Post>
+                               
                         )})
                     }
                 </View>
           
             </ScrollView>
-        // {
-        //     (stateUserInfo.Search == false) 
-        //     ?
-        //     <View>
-        //         <Text>Không có users</Text>
-        //     </View>
-        //     :
-        //     stateUserInfo.Search.map((item) =>{return(
-        //         <ItemSearch
-        //         key={item.idUser}
-        //         nameUser={item.userName}
-        //         onPress={() => {
-        //             getUserInfo(item.idUser,navigation,dispatchUserInfo,dispatchPost)
-        //         }}
-        //                 />
-        //             )}) 
-                    
-                    
-        // }
     )
 }
 const styleListPost = StyleSheet.create({
@@ -72,3 +52,7 @@ const styleListPost = StyleSheet.create({
         marginVertical:10
     }
 })
+const mapStateToProps = (state) =>({
+    listPost:state.post.Posts,
+});
+export default connect(mapStateToProps)(ListPost);

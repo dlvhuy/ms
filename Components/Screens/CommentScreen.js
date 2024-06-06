@@ -4,7 +4,7 @@ import ListComment from "../Lists/ListComment";
 import Header from "../Header_Bottom/Header";
 
 
-export default function CommentScreen()
+export default function CommentScreen({idPost})
 {
     return(
         <View style={styleCommentScreen.ContainerCommentScreen}>

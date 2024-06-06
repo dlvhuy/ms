@@ -1,22 +1,16 @@
 
-
-
-import { PostContainerImage } from './Components/CommonComponents/Images/PostContainerImage';
-import PostProvider from './Contexts/PostProvider';
-import UserInfoProvider from './Contexts/UserInfoProvider';
 import Route from './Route/Route';
-
-
+import { Provider } from 'react-redux';
+import store from './ContextRedux/Store';
 export default function App() {
  
   return(
-      // <PostProvider>
-      //   <UserInfoProvider>
-      //   <Route></Route>
-      //   </UserInfoProvider>
-      // </PostProvider>
-      <PostContainerImage/>
+    <Provider store={store}>
+          <Route></Route>
+    </Provider>
     
+      // <PostContainerImage/>
+      // <PostScreen/>
     )
     
           // <Bottom></Bottom>

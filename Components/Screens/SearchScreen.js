@@ -1,66 +1,57 @@
 import { StatusBar, StyleSheet, TextInput, View ,Text} from "react-native"
-import MyTextInput from "../CommonComponents/Inputs/MyTextInput"
-import { useContext, useEffect, useState } from "react"
-import { UserInfoContext } from "../../Contexts/UserInfoProvider"
 import { searchUserInfo,getUserInfo } from "../../Apis/FetchConnection/UserInfo/UserInfo"
 import ItemSearch from "../ItemSearch"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
-import { PostContext } from "../../Contexts/PostProvider"
-import { GetSearchItems } from "../../Reducers/UserInfoAction"
+import { connect } from "react-redux"
+import Bottom from "../Header_Bottom/Bottom"
 
-export const SearchScreen = () =>{
+const SearchScreen = ({userInfoSearchs}) =>{
     const navigation = useNavigation()
-    const  [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext)
-    const [statePost,dispatchPost]  = useContext(PostContext)
-   
     const isFocused = useIsFocused()
-
-    console.log("day la SearchScreen: ",stateUserInfo.Search)
+    console.log("day la SearchScreen: ",userInfoSearchs)
     return (
         <View style={searchSceenStyle.screenSearchContainer}>
-            <View style={searchSceenStyle.searchContainer} >
-                <TextInput
-                    placeholder="Search user..."
-                    onChangeText={text => {searchUserInfo(text,dispatchUserInfo)}}
-                   
-                />
-            </View>
-            <View style={searchSceenStyle.listItemSearchContainer}>
-               
-
-                     {
-                        (stateUserInfo.Search == false) 
-                        ?
-                        <View>
-                            <Text>Không có users</Text>
-                        </View>
-                        :
-                        stateUserInfo.Search.map((item) =>{return(
-                            <ItemSearch
-                            key={item.idUser}
-                            nameUser={item.userName}
-                            avatar={item.avatarImage}
-                            onPress={() => {
-                                getUserInfo(item.idUser,navigation,dispatchUserInfo,dispatchPost)
-                            }}
+            <View style={{alignItems:"center"}}>
+                <View style={searchSceenStyle.searchContainer} >
+                    <TextInput
+                        placeholder="Search user..."
+                        onChangeText={text => {searchUserInfo(text)}}
+                        
+                        />
+                </View>
+                <View style={searchSceenStyle.listItemSearchContainer}>
+                        {
+                            (userInfoSearchs == false) 
+                            ?
+                            <View>
+                                <Text>Không có users</Text>
+                            </View>
+                            :
+                            userInfoSearchs.map((item) =>{return(
+                                <ItemSearch
+                                key={item.idUser}
+                                nameUser={item.userName}
+                                avatar={item.avatarImage}
+                                onPress={() => {
+                                    getUserInfo(item.idUser,navigation)
+                                    }}
                                     />
-                                )}) 
-                                
-                                
-                    }
-
-               
-                
+                                    )}) 
+                                    
+                                    
+                                    }
+                </View>
             </View>
+            <Bottom/>
         </View>
     )
 }
 const searchSceenStyle = StyleSheet.create({
     screenSearchContainer:{
-        marginTop:StatusBar.currentHeight,
         flex:1,
-        alignItems:"center",
-        justifyContent:"flex-start"
+        
+        justifyContent:"space-between",
+        marginTop:StatusBar.currentHeight,
     },
     searchContainer:{
         marginVertical:10,
@@ -76,10 +67,13 @@ const searchSceenStyle = StyleSheet.create({
         flexDirection:"collumn",
         paddingHorizontal:15,
         alignItems:"flex-start"
-        
-       
     },
     subListItemSearchContainer:{
        
     }
 })
+
+const mapStateToProps = (state) =>({
+    userInfoSearchs:state.userInfo.Search
+});
+export default connect(mapStateToProps)(SearchScreen);

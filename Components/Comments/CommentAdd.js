@@ -4,17 +4,13 @@ import ItemImageList from "../CommonComponents/Images/ItemImageList";
 import * as ImagePicker from 'expo-image-picker'
 import { useState, useContext } from "react";
 import MyTextInput from "../CommonComponents/Inputs/MyTextInput";
-import {CommentContext} from "../../Contexts/CommentProvider";
 import { AddCommentPostConnection } from "../../Apis/HubsConnection/Connections/CommentConnection";
 
-export default function CommentAdd()
+export default function CommentAdd({IdPost})
 {
     
-    const [state,dispatch,IdPost] = useContext(CommentContext)
     const [comment,setComment] = useState({CommentContent:"",IdPost:IdPost})
-    
     const [selectImage,setSelectImage] = useState(null);
-
     const handleRemoveImage = () =>{
         setSelectImage(null);
     }

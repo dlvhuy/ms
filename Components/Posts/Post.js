@@ -1,32 +1,28 @@
 import { View, Image,Text, StyleSheet, Touchable, Pressable, Modal, TouchableOpacity } from "react-native"
 import ButtonPost from "../CommonComponents/Buttons/ButtonPost";
-import { useState,useCallback, useReducer, useEffect, useContext } from "react";
+import { useState,useCallback, useReducer, useEffect, useContext,Children, memo } from "react";
 import FontAweSome from "@expo/vector-icons/FontAwesome"
 import ButtonIconPress from "../CommonComponents/Buttons/ButtonIconPress";
 import CommentScreen from "../Screens/CommentScreen";
-import CommentProvider from "../../Contexts/CommentProvider";
 import { getUserInfo } from "../../Apis/FetchConnection/UserInfo/UserInfo";
-
 import { CommentPostConnection } from "../../Apis/HubsConnection/Connections/CommentConnection";
 import { useNavigation } from "@react-navigation/native";
-import { UserInfoContext } from "../../Contexts/UserInfoProvider";
-import { PostContext } from "../../Contexts/PostProvider";
-export default function Post({Post,onPressHeartButton})
+import { UpdateLikePostConnection } from "../../Apis/HubsConnection/Connections/PostConnection";
+import { GetPost2 } from "../../Apis/FetchConnection/Posts/AllPosts";
+function Post({Post,children,isPostScreen})
 {
-    const [listComment,setListComment] = useState([])
+
+    
     const [numOfLines,setNumOfLines] = useState(0);
     const [loadMore,setLoadMore] = useState(false);
     const [isModalVisible,setIsModalVisible] = useState(false);
-    const [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext)
-    const [statePost,dispatchPost] = useContext(PostContext);
-    const avatar = require("../../assets/adaptive-icon.png");
-
+    const navigation = useNavigation()
+   
     const onTextLayout = useCallback(e => {
         if(numOfLines == 0)
             setNumOfLines(e.nativeEvent.lines.length);
     });
 
-    
     const onLoadMoreToggle = () => {
         setLoadMore(!loadMore);
         
@@ -34,24 +30,38 @@ export default function Post({Post,onPressHeartButton})
     const openModalComment = (IdPost) =>{
         
         setIsModalVisible(true)
-        CommentPostConnection(isModalVisible,IdPost)
+        CommentPostConnection(isModalVisible,IdPost,navigate)
         
     }
-    const navigation = useNavigation()
+    const updateLike = (id) => {
+        UpdateLikePostConnection(id)
+    }
+
+
     return(
        
             <View style={stylePost.Post}>
-                <View style={stylePost.ContainerInfomation}>
-                    <Image style={stylePost.imageAvatar} source={{uri:Post.avatarImage}} ></Image>
-                    <TouchableOpacity onPress={() => {
-                        getUserInfo(Post.idUser,navigation,dispatchUserInfo,dispatchPost)
-                        
+                <View style={{ paddingHorizontal:20,flexDirection:"row",justifyContent:"space-between"}}>
+                    <View style={stylePost.ContainerInfomation}>
+                        <Image style={stylePost.imageAvatar} source={{uri:Post.user.avatarImage}} ></Image>
+                        <TouchableOpacity onPress={() => {
+                            getUserInfo(Post.user.idUser,navigation)
                         }}>
-                        <Text style={stylePost.UserName}>{Post.userName}</Text>
-                    </TouchableOpacity>
+                            <Text style={stylePost.UserName}>{Post.user.userName}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {
+                        (Post.postContentResponses.length > 1 && !isPostScreen)?
+                        <View style={stylePost.CircleCount}>
+                            <Text style={{color:"gray"}}>{Post.postContentResponses.length - 1}</Text>
+                        </View>
+                        :
+                        <></>
+
+                    }
                 </View>
                 <View style={stylePost.ContainerStatusAndConTentImage}>
-                        <Text style={{paddingHorizontal:20}}
+                        <Text style={{paddingHorizontal:20,marginTop:5}}
                         numberOfLines={numOfLines == 0 ? null : loadMore ? numOfLines : 5} 
                         onTextLayout={onTextLayout} >
                         {Post.postContent}
@@ -66,7 +76,19 @@ export default function Post({Post,onPressHeartButton})
                                 </Pressable>
                             </View>
                         }
-                    <Image style={stylePost.ImageContent} source={avatar}/>    
+                        
+                        {
+                        children == null ?
+                            Post.postContentResponses[0] != null ?
+                            <TouchableOpacity onPress={() => {GetPost2(Post.idPost,navigation)}}>
+                                <View style={stylePost.ImageContainer} >
+                                    <Image style={stylePost.ImageContent} source={{uri:Post.postContentResponses[0].urlimageVideo}}/>
+                                 </View>
+                            </TouchableOpacity>
+                            :   <></>
+                            : <>{children}</>
+                        
+                        }
                 </View>
                 <View style={stylePost.ContainerLikesInfo}>
                     {
@@ -80,8 +102,8 @@ export default function Post({Post,onPressHeartButton})
                     }
                 </View>
                 <View style={stylePost.ContainerButton}>
-                    <ButtonIconPress buttonIcon={"heart"} buttonTitle={"Like"} onPress={onPressHeartButton} isLike={Post.likePost.isLike}/>
-                    <ButtonPost buttonIcon={"comment"} buttonTitle={"Comment"} onPress={() => openModalComment(Post.idPost)}/>
+                    <ButtonIconPress buttonIcon={"heart"} buttonTitle={"Like"} onPress={() => updateLike(Post.idPost)} isLike={Post.likePost.isLike}/>
+                    <ButtonPost buttonIcon={"comment"} buttonTitle={"Comment"} onPress={() => openModalComment(Post.idPost,navigation)}/>
                     <ButtonPost buttonIcon={"share"} buttonTitle={"Share"} />
                 </View>
                 <Modal
@@ -89,9 +111,7 @@ export default function Post({Post,onPressHeartButton})
                  onRequestClose={() => {setIsModalVisible(false),CommentPostConnection(isModalVisible,Post.idPost)}}
                  animationType="fade"
                  >
-                    <CommentProvider IdPost={Post.idPost}>
-                        <CommentScreen />
-                    </CommentProvider>
+                    <CommentScreen idPost={Post.idPost}/>
                 </Modal>
             </View>
         
@@ -109,25 +129,33 @@ const stylePost = StyleSheet.create({
     },
     Post:{
         backgroundColor:"white",
-        
-        borderRadius:4,
+        borderRadius:8,
         shadowColor:"Black", 
         paddingVertical:10,
         marginVertical:5,
-        borderWidth:0.1,
+        borderWidth:0.8,
         borderColor:"#f5f5f5"
     },
     ContainerInfomation:{
         flexDirection:"row",
         justifyContent:"flex-start",
-        paddingHorizontal:20
+       
     },
     imageAvatar:{
-        width:50,
-        height:50,
+        width:40,
+        height:40,
         borderRadius:25,
         borderWidth:1,
         marginRight:8
+    },
+    CircleCount:{
+        width:40,
+        height:40,
+        borderRadius:40,
+        backgroundColor:"rgb(240, 240, 240)",
+        justifyContent:"center",
+        alignItems:"center",
+       
     },
     ContainerButton:{
         marginTop:10,
@@ -143,10 +171,12 @@ const stylePost = StyleSheet.create({
         flexDirection:"collumn",
         justifyContent:"flex-start"
     },
-    ImageContent:{
+    ImageContainer:{
         marginTop:15,
+    },
+    ImageContent:{
         width:'100%',
-        height:300
+        height:300,
     },
     status:{
         flexDirection:"column"
@@ -155,7 +185,11 @@ const stylePost = StyleSheet.create({
         color: '#2196f3'
     },
     UserName:{
-        fontSize:15
+        fontSize:15,
+        fontWeight:"bold"
     }
 
 })
+
+
+export default memo(Post)

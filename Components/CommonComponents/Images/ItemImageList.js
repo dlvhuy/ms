@@ -9,11 +9,11 @@ export default function ItemImageList({source,onPress})
             <View style={styleImage.SelectedImage}>
                 <Image style={styleImage.SelectedImage} source={{uri:source}}/>
             </View>
-            <View style={styleImage.icon}>
                 <Pressable onPress={onPress}>
-                    <Ionicons name="remove-circle" color={"white"}  size={20}></Ionicons>
-                </Pressable>
+            <View style={styleImage.icon}>
+                    <Ionicons name="remove-circle" color={"white"}  size={25}></Ionicons>
             </View>
+                </Pressable>
                 
             
         </View>
@@ -29,8 +29,8 @@ const styleImage = StyleSheet.create({
         borderRadius:8,
     },
     icon:{
-        width:20,
-        height:20,
+        width:25,
+        height:25,
         bottom:65,
         left:45
     }

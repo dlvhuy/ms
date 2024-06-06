@@ -2,27 +2,24 @@ import { StyleSheet, View } from "react-native"
 import ButtonIcon from "../../CommonComponents/Buttons/ButtonIcon"
 import { useNavigation } from "@react-navigation/native"
 import { getUserInfo } from "../../../Apis/FetchConnection/UserInfo/UserInfo"
-import { useContext } from "react"
-import { UserInfoContext } from "../../../Contexts/UserInfoProvider"
-import { PostContext } from "../../../Contexts/PostProvider"
-export default Bottom = () =>{
+import { connect } from "react-redux"
+const Bottom = ({userInfoID}) =>{
 
     const navigation = useNavigation()
-    const [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext)
-    const [statePost,dispatchPost] = useContext(PostContext)
+    console.log("day la Bottom: ",userInfoID)
     return(
         <View style={styleBottom.containerBottom}>
             <ButtonIcon nameIcon={"home"} size={30} onPress={() => navigation.navigate("Home")}></ButtonIcon>
             <ButtonIcon nameIcon={"search"} size={30} onPress={() => navigation.navigate("Search")}></ButtonIcon>
-            <ButtonIcon nameIcon={"add-circle"} size={30} onPress={() => navigation.navigate("AddPost")}></ButtonIcon>
+            {/* <ButtonIcon nameIcon={"add-circle"} size={30} onPress={() => navigation.navigate("AddPost")}></ButtonIcon> */}
             <ButtonIcon nameIcon={"person"} size={30} onPress={() => {
-                getUserInfo(stateUserInfo.CurrentUserID,navigation,dispatchUserInfo,dispatchPost)
+                getUserInfo(userInfoID,navigation)
                 }} ></ButtonIcon>
         </View>
     )
 }
 
-const styleBottom    = StyleSheet.create({
+const styleBottom = StyleSheet.create({
     containerBottom:{
         
         alignItems:"center",
@@ -35,3 +32,7 @@ const styleBottom    = StyleSheet.create({
         borderColor:"#f5f5f5"
     },
 })
+const mapStateToProps = (state) =>({
+    userInfoID:state.userInfo.CurrentUserID
+});
+export default connect(mapStateToProps)(Bottom);

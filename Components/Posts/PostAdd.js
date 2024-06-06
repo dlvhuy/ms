@@ -4,18 +4,23 @@ import * as ImagePicker from 'expo-image-picker'
 import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
 import { AddPostConnection } from "../../Apis/HubsConnection/Connections/PostConnection";
-import { PostContext } from "../../Contexts/PostProvider";
-
+import { AddImage } from "../CommonComponents/Images/AddImage";
+import { AddPost } from "../../Apis/FetchConnection/Posts/AllPosts";
+import { checkImageSize } from "../../Helper/ImageHelper";
+import Bottom from "../Header_Bottom/Bottom";
 
 
 export default function PostAdd({UserName})
 {
-    const [selectImage,setSelectImage] = useState(null);
+    const [selectImage,setSelectImage] = useState([]);
     const [postContent,setPostContent] = useState('')
-    const [state,dispatch] = useContext(PostContext)
     
-    const handleRemoveImage = () =>{
-        setSelectImage(null);
+    
+    const handleRemoveImage = (index) =>{
+
+        const newImages = [...selectImage]
+        newImages.splice(index,1);
+        setSelectImage(newImages);
     }
 
     const pickImage = async () =>{
@@ -24,11 +29,13 @@ export default function PostAdd({UserName})
             allowsEditing: true,
             aspect: [16,9],
             quality: 1,
+            base64:true
         });
-        console.log(result.assets[0].uri);
-        
+       
+
         if (!result.canceled) {
-        setSelectImage(result.assets[0].uri);
+            checkImageSize(result.assets,selectImage,setSelectImage)
+            // setSelectImage(selectImage => [...selectImage,result.assets]);
     }
     }
 
@@ -37,37 +44,39 @@ export default function PostAdd({UserName})
     return (
         <View style={stylePostAdd.PostAdd}>
             <View>
-
-            <View style={stylePostAdd.ContainerHeader}>
-                <View style={stylePostAdd.ContainerInfomation}>
-                    <Image style={stylePostAdd.imageAvatar} source={avatar} ></Image>
-                    <Text style={stylePostAdd.UserName}>{UserName}</Text>
+                <View style={stylePostAdd.ContainerHeader}>
+                    <View style={stylePostAdd.ContainerInfomation}>
+                        <Image style={stylePostAdd.imageAvatar} source={avatar} ></Image>
+                        <Text style={stylePostAdd.UserName}>{UserName}</Text>
+                    </View>
+                    <View>
+                        <Button onPress={() => {AddPost({idGroup:null,postContent:postContent,listImage:selectImage})}} title="Post"></Button> 
+                    </View>
                 </View>
-                <View>
-                    <Button onPress={() => {AddPostConnection({idGroup:null,postContent:postContent},dispatch)}} title="Post"></Button> 
+                {/* onPress ={PostAdd} */}
+                <View style={stylePostAdd.ViewInput} >
+                    <TextInput
+                        onChangeText={text => setPostContent(text)}
+                        placeholder="What's on your mind, UserName"
+                        multiline
+                        numberOfLines={5}
+                        style={stylePostAdd.input}
+                        />            
                 </View>
-            </View>
-            {/* onPress ={PostAdd} */}
-            <View style={stylePostAdd.ViewInput} >
-                <TextInput
-                    onChangeText={text => setPostContent(text)}
-                    placeholder="What's on your mind, UserName"
-                    multiline
-                    numberOfLines={5}
-                    style={stylePostAdd.input}
-                    />            
-            </View>
-                <View style={stylePostAdd.ContainerListImage}>
-                    {selectImage &&  <ItemImageList onPress={handleRemoveImage} source={selectImage}/>}
-                </View>
-            </View>
-            <View style={stylePostAdd.ContainerButtons}>
-                <View style={stylePostAdd.ContainerButtonIcon}>
-                    <Pressable onPress={pickImage}>
-                        <ButtonIcon nameIcon={"image"} size={30} ></ButtonIcon>
-                    </Pressable>
-                    <ButtonIcon nameIcon={"camera"} size={30} ></ButtonIcon> 
-                    <ButtonIcon nameIcon={"location"} size={30} ></ButtonIcon> 
+                    {selectImage &&
+                        <View style={stylePostAdd.ContainerListImage}>
+                            {selectImage.map((item,index) => {return(
+                                <ItemImageList key={index} onPress={() => handleRemoveImage(index)} source={item.uri}/>
+                            )})}
+                            <AddImage onPress={pickImage}/>
+                        </View>
+                    }
+                <View style={stylePostAdd.ContainerButtons}>
+                    <View style={stylePostAdd.ContainerButtonIcon}>
+                        {(selectImage == []) && <ButtonIcon nameIcon={"image"} size={30} onPress={pickImage}></ButtonIcon>}
+                        <ButtonIcon nameIcon={"camera"} size={30} ></ButtonIcon> 
+                        <ButtonIcon nameIcon={"location"} size={30} ></ButtonIcon> 
+                    </View>
                 </View>
             </View>
         </View>
@@ -78,9 +87,9 @@ const stylePostAdd = StyleSheet.create({
     PostAdd:{
         flex:1,
         backgroundColor:"white",
-        flexDirection:"collumn",
-        justifyContent:"flex-start",
-        padding: 20,
+        flexDirection:"column",
+        justifyContent:"space-between",
+        paddingHorizontal: 20,
         shadowColor:"Black", 
     },
     ContainerHeader:{
@@ -136,8 +145,11 @@ const stylePostAdd = StyleSheet.create({
     ContainerListImage:{
         paddingHorizontal:8,
         marginVertical:8,
+        flexDirection:"row",
+        gap:16
     },
     buttonContainerIcon:{
+        flexWrap:"wrap",
         flexDirection:"row",
         columnGap:10,
     },

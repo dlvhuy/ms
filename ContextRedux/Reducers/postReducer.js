@@ -1,27 +1,36 @@
-import { GET_POSTS,ADD_POST,UPDATE_LIKE_CALLER, UPDATE_LIKE_OTHERS } from "../PostAction"
 
-export const initPostState2 = {
+import { GET_POSTS,ADD_POST,UPDATE_LIKE_CALLER, UPDATE_LIKE_OTHERS,GET_POST,UPDATE_LIKE_CALLER_POST,UPDATE_LIKE_CALLER_POST2,GET_POST2 } from "../Actions/postActions"
+
+const initPostState2 = {
     Posts:[],
-    Post:{
-        idPost:0,
-        idUser:0,
-        userName:"",
-        idGroup:null,
-        postContent:""
+    PostCurrent:{
     }
 }
-
-
-
-export default function PostReducer(state,action){
-    
-    
+export default  postReducer = (state = initPostState2,action) => {
     switch(action.type)
     {
+       
+        case GET_POSTS:
+            return{
+                ...state,
+                Posts:action.payload
+            };
+        case ADD_POST:
+            return{   
+                ...state,
+                Posts:[...state.Posts,action.payload]
+            };
+        case GET_POST2:
+            const postCurrent = state.Posts.find(post => post.idPost == action.payload)
+            console.log("day lâ get post 2:",postCurrent)
+            return{
+                ...state,
+                PostCurrent:postCurrent
+            };
         case UPDATE_LIKE_CALLER:
             const {object_c,idPost_c} = action.payload
             console.log("đay la updateLikeCaller:",object_c," ",idPost_c)
-            const updatePost = state.Posts.map((post) =>{
+            const updatePosts = state.Posts.map((post) =>{
                 if(post.idPost === idPost_c)
                     return {
                         ...post,
@@ -31,8 +40,18 @@ export default function PostReducer(state,action){
             })
            return {
             ...state,
-            Posts:updatePost
-           }
+            Posts:updatePosts
+           };
+        case UPDATE_LIKE_CALLER_POST:
+            const {object_cp} = action.payload
+            console.log("đay la updateLikeCallerPost:",object_cp)
+            return{
+                ...state,
+                PostCurrent:{
+                    ...state.PostCurrent,
+                    likePost:object_cp
+                }
+            };
         case UPDATE_LIKE_OTHERS:
             const {object_o,idPost_o} = action.payload
             console.log("đay la updateLikeother:",object_o," ",idPost_o)
@@ -50,20 +69,9 @@ export default function PostReducer(state,action){
            return {
             ...state,
             Posts:updatePost_other
-           }
-        case GET_POSTS:
-            return{
-                ...state,
-                Posts:action.payload
-            }
-            
-        case ADD_POST:
-            return{   
-                ...state,
-                Posts:[...state.Posts,action.payload]
-            }
+           };
         default:
-            throw new Error("Invalid action")
+            return state
     }
     
 }

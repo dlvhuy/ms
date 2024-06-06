@@ -2,14 +2,14 @@ import { save } from "../../../expoSecure/Secure";
 import { API_URL } from "../..";
 import { AllPosts } from "../Posts/AllPosts";
 import { startConnection } from "../../HubsConnection/Connections/Connections";
-import { GetCurrentUserId } from "../../../Reducers/UserInfoAction";
-
+import { GetCurrentUserId } from "../../../ContextRedux/Actions/userInfoActions";
+import store from "../../../ContextRedux/Store";
 
 // tạo nơi an toàn để có thể lưu jwt
 // kết nối react vs signal R cho tạo bài viết và tạo comment
 // chỉnh sửa thông tin user
 // tạo trang có form tạo nhóm
-export const postLoginData = async (probs,loginInputText,dispatchUserInfo) => {
+export const postLoginData = async (probs,loginInputText) => {
     console.log(loginInputText)
     
     try {
@@ -21,8 +21,8 @@ export const postLoginData = async (probs,loginInputText,dispatchUserInfo) => {
                     'Content-Type':'application/json'
                 },
                 body:JSON.stringify({
-                    emailUser:loginInputText.UserName,
-                    passwordUser:loginInputText.PassWord
+                    emailUser:"Vanhuy098420@gmail.com",
+                    passwordUser:"123456"
                 })
             });
         const json = await response.json();
@@ -34,7 +34,7 @@ export const postLoginData = async (probs,loginInputText,dispatchUserInfo) => {
             startConnection().then(() =>{
                 
             })
-            dispatchUserInfo(GetCurrentUserId(json.idCurrentUser))
+            store.dispatch(GetCurrentUserId(json.idCurrentUser))
             probs.navigation.navigate("Home")
             
         }

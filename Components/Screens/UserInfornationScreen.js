@@ -1,17 +1,13 @@
 import {View, StyleSheet,StatusBar, ScrollView } from "react-native"
-import Header from "../Header_Bottom/Header"
 import ListPost from "../Lists/ListPost"
 import UserInfomation from "../UserInfomation"
-import { Button } from "../CommonComponents/Buttons/Button"
 import Bottom from "../Header_Bottom/Bottom"
-import { useContext } from "react"
-import { UserInfoContext } from "../../Contexts/UserInfoProvider"
-import { PostContext } from "../../Contexts/PostProvider"
+import { connect } from "react-redux"
 
-export default function UserInformationScreen()
-{
-    const [stateUserInfo,dispatchUserInfo] = useContext(UserInfoContext);
-    const [statePost,dispatchPost]= useContext(PostContext);
+
+function UserInformationScreen({userInfo,listPostUserInfo})
+{   
+
     // thêm chức nang chỉnh sửa Thông tin người dung,
     // thêm chức  năng tạo group, thêm thành viên vào group
     // tìm kiếm groups hoặc người dùng
@@ -21,8 +17,8 @@ export default function UserInformationScreen()
         <View style={styleHomeScreen.containerHomeScreen}>
             
             <ScrollView>
-                <UserInfomation UserInfo={stateUserInfo.UserInfo} />
-                <ListPost listPost={statePost.Posts} isCurrentUser={stateUserInfo.UserInfo.isCurrentUser}/>
+                <UserInfomation UserInfo={userInfo} />
+                <ListPost listPost={listPostUserInfo} isCurrentUser={userInfo.isCurrentUser}/>
             </ScrollView>
             <Bottom/>
         </View>
@@ -37,3 +33,10 @@ const styleHomeScreen = StyleSheet.create({
         marginTop:StatusBar.currentHeight
     },
 })
+
+const mapStateToProps = (state) =>({
+    listPostUserInfo:state.post.Posts,
+    userInfo:state.userInfo.UserInfo
+});
+
+export default connect(mapStateToProps)(UserInformationScreen);

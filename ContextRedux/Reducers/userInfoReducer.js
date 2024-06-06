@@ -1,4 +1,4 @@
-import { UPDATE_USERINFO,GET_USERINFO,GET_CURRENT_USERID,GET_SEARCH_ITEM } from "../UserInfoAction"
+import { UPDATE_USERINFO,GET_USERINFO,GET_CURRENT_USERID,GET_SEARCH_ITEM } from "../Actions/userInfoActions"
 
 export const initUserInfoState = {
     CurrentUserID:0,
@@ -13,7 +13,7 @@ export const initUserInfoState = {
     }
 }
 
-export default function UserInfoReducer(state,action){
+export default userInfoReducer = (state = initUserInfoState,action) =>{
 
     switch(action.type)
     {
@@ -44,6 +44,6 @@ export default function UserInfoReducer(state,action){
                 Search:action.payload
             }
         default:
-            throw new Error("Invalid action")
+            return state
     }
 }
