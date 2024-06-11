@@ -5,24 +5,10 @@ import store from './ContextRedux/Store';
 export default function App() {
  
   return(
-    <Provider store={store}>
-          <Route></Route>
-    </Provider>
-    
-      // <PostContainerImage/>
-      // <PostScreen/>
+      <Provider store={store}>
+            <Route></Route>
+      </Provider>
     )
-    
-          // <Bottom></Bottom>
-       
-
-      //  <LogInForm></LogInForm>
-   
-  
-   
-
-    
-
 }
 
 

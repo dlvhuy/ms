@@ -5,11 +5,11 @@ const initPostState2 = {
     Posts:[],
     PostCurrent:{
     }
-}
+};
+
 export default  postReducer = (state = initPostState2,action) => {
     switch(action.type)
     {
-       
         case GET_POSTS:
             return{
                 ...state,

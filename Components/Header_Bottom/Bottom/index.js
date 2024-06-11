@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native"
 import { getUserInfo } from "../../../Apis/FetchConnection/UserInfo/UserInfo"
 import { connect } from "react-redux"
 const Bottom = ({userInfoID}) =>{
-
     const navigation = useNavigation()
     console.log("day la Bottom: ",userInfoID)
     return(

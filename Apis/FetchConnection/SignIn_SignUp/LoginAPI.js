@@ -1,7 +1,7 @@
 import { save } from "../../../expoSecure/Secure";
 import { API_URL } from "../..";
 import { AllPosts } from "../Posts/AllPosts";
-import { startConnection } from "../../HubsConnection/Connections/Connections";
+import { startConnection} from "../../HubsConnection/Connections/Connections";
 import { GetCurrentUserId } from "../../../ContextRedux/Actions/userInfoActions";
 import store from "../../../ContextRedux/Store";
 
@@ -21,8 +21,8 @@ export const postLoginData = async (probs,loginInputText) => {
                     'Content-Type':'application/json'
                 },
                 body:JSON.stringify({
-                    emailUser:"Vanhuy098420@gmail.com",
-                    passwordUser:"123456"
+                    emailUser:loginInputText.UserName,
+                    passwordUser:loginInputText.PassWord
                 })
             });
         const json = await response.json();
@@ -30,10 +30,7 @@ export const postLoginData = async (probs,loginInputText) => {
         if(json.success == true){
             console.log("day la json trong PostLogiData: ",json)
             save("JWT_TOKEN",json.token)
-
-            startConnection().then(() =>{
-                
-            })
+            startConnection().then(() =>{})
             store.dispatch(GetCurrentUserId(json.idCurrentUser))
             probs.navigation.navigate("Home")
             

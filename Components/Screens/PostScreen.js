@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet,View } from "react-native"
+import { ScrollView, StatusBar, StyleSheet,View } from "react-native"
 import Post from "../Posts/Post"
 import { PostScreenImageContainer } from "../CommonComponents/Images/PostImageContainer/PostScreenImageContainer"
 import Header from "../Header_Bottom/Header"
@@ -22,6 +22,7 @@ const PostScreen = ({post}) =>{
 const PostScreenStyle = StyleSheet.create({
     PostScreenContainerStyle:{
         flex:1,
+        marginTop:StatusBar.currentHeight
     },
 })
 const mapStateToProps = (state) =>({

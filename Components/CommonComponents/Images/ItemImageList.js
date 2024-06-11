@@ -23,7 +23,6 @@ export default function ItemImageList({source,onPress})
 const styleImage = StyleSheet.create({
 
     SelectedImage:{
-        
         height:70,
         width:70,
         borderRadius:8,

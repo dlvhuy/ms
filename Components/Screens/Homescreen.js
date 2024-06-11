@@ -3,7 +3,7 @@ import Header from "../Header_Bottom/Header"
 import ListPost from "../Lists/ListPost"
 import Bottom from "../Header_Bottom/Bottom"
 import { useContext, useEffect } from "react"
-import { AllPosts } from "../../Apis/FetchConnection/Posts/AllPosts"
+import { AllPosts,TestHub } from "../../Apis/FetchConnection/Posts/AllPosts"
 import { useIsFocused } from "@react-navigation/native"
 import { memo } from "react";
 function HomeScreen()
@@ -11,16 +11,16 @@ function HomeScreen()
     const isFocused = useIsFocused();
     useEffect(() =>{
         if(isFocused)
+        {
             AllPosts()
+        }
     },[isFocused])
     return(
-                    <View style={styleHomeScreen.containerHomeScreen}>
-                            <Header IsMainHeader={true}/>
-                                <ListPost />
-                            <Bottom/>
-                    </View>
-                
-        
+        <View style={styleHomeScreen.containerHomeScreen}>
+                <Header IsMainHeader={true}/>
+                    <ListPost />
+                <Bottom/>
+        </View>
     )
 }
 
@@ -31,6 +31,5 @@ const styleHomeScreen = StyleSheet.create({
         justifyContent:"center",
         backgroundColor:"white",
         marginTop:StatusBar.currentHeight,
-        
     },
 })

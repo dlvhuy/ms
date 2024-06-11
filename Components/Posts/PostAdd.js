@@ -3,11 +3,10 @@ import ButtonIcon from "../CommonComponents/Buttons/ButtonIcon";
 import * as ImagePicker from 'expo-image-picker'
 import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import ItemImageList from "../CommonComponents/Images/ItemImageList";
-import { AddPostConnection } from "../../Apis/HubsConnection/Connections/PostConnection";
 import { AddImage } from "../CommonComponents/Images/AddImage";
 import { AddPost } from "../../Apis/FetchConnection/Posts/AllPosts";
 import { checkImageSize } from "../../Helper/ImageHelper";
-import Bottom from "../Header_Bottom/Bottom";
+
 
 
 export default function PostAdd({UserName})

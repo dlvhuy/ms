@@ -18,8 +18,9 @@ export const getUserInfo = async (idUser,navigation) =>{
             const jsonResponseGetUserInfo = await responseGetUserInfo.json();
            
             if(jsonResponseGetUserInfo.success){
-                const {idUser,isCurrentUser,userDescription,userName,postResponses,coverImage,avatarImage} = jsonResponseGetUserInfo.object;
-                store.dispatch(GetUserInfo(idUser,isCurrentUser,userDescription,userName,coverImage,avatarImage))
+                console.log("day la get UserInfo:",jsonResponseGetUserInfo.object)
+                const {idUser,isCurrentUser,userDescription,userName,postResponses,coverImage,avatarImage,friendStatus} = jsonResponseGetUserInfo.object;
+                store.dispatch(GetUserInfo(idUser,isCurrentUser,userDescription,userName,coverImage,avatarImage,friendStatus))
                 store.dispatch(getPosts(postResponses))
                 navigation.navigate("UserInfomation")
             }

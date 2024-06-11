@@ -33,6 +33,6 @@ const styleImageAvatar = StyleSheet.create({
         marginRight:8
     },
     UserName:{
-        fontSize:18
+        fontSize:15
     },
 })

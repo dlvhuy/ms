@@ -7,8 +7,7 @@ import CommentScreen from "../Screens/CommentScreen";
 import { getUserInfo } from "../../Apis/FetchConnection/UserInfo/UserInfo";
 import { CommentPostConnection } from "../../Apis/HubsConnection/Connections/CommentConnection";
 import { useNavigation } from "@react-navigation/native";
-import { UpdateLikePostConnection } from "../../Apis/HubsConnection/Connections/PostConnection";
-import { GetPost2 } from "../../Apis/FetchConnection/Posts/AllPosts";
+import { GetPost2,LikePost } from "../../Apis/FetchConnection/Posts/AllPosts";
 function Post({Post,children,isPostScreen})
 {
 
@@ -27,14 +26,14 @@ function Post({Post,children,isPostScreen})
         setLoadMore(!loadMore);
         
     }
-    const openModalComment = (IdPost) =>{
+    const openModalComment = (IdPost,navigation) =>{
         
         setIsModalVisible(true)
-        CommentPostConnection(isModalVisible,IdPost,navigate)
+        CommentPostConnection(isModalVisible,IdPost,navigation)
         
     }
     const updateLike = (id) => {
-        UpdateLikePostConnection(id)
+        LikePost(id)
     }
 
 
@@ -109,7 +108,7 @@ function Post({Post,children,isPostScreen})
                 <Modal
                  visible={isModalVisible}
                  onRequestClose={() => {setIsModalVisible(false),CommentPostConnection(isModalVisible,Post.idPost)}}
-                 animationType="fade"
+                 animationType="slide"
                  >
                     <CommentScreen idPost={Post.idPost}/>
                 </Modal>

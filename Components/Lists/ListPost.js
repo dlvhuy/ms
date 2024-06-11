@@ -8,8 +8,7 @@ import {connect} from "react-redux"
 function ListPost({listPost,isCurrentUser = true})
 {   
     // const [statePost,dispatchPost] = useContext(PostContext);
-    
-    console.log(listPost)
+
     return(
             <ScrollView style={{backgroundColor:"rgb(240, 240, 240)"}}>
                 {
@@ -36,7 +35,6 @@ function ListPost({listPost,isCurrentUser = true})
                         )})
                     }
                 </View>
-          
             </ScrollView>
     )
 }
@@ -45,7 +43,6 @@ const styleListPost = StyleSheet.create({
     ContainerPost:{
         flex:1,
         justifyContent:"center",
-       
     },
     NonPostContainer:{
         alignItems:"center",

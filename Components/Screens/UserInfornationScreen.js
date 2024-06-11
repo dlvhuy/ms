@@ -13,6 +13,7 @@ function UserInformationScreen({userInfo,listPostUserInfo})
     // tìm kiếm groups hoặc người dùng
     // thêm cơ chế ảnh vào comment và các post
     
+    console.log("day la UserInformationScreen",userInfo)
     return(
         <View style={styleHomeScreen.containerHomeScreen}>
             

@@ -1,4 +1,4 @@
-import { UPDATE_USERINFO,GET_USERINFO,GET_CURRENT_USERID,GET_SEARCH_ITEM } from "../Actions/userInfoActions"
+import { UPDATE_USERINFO,GET_USERINFO,GET_CURRENT_USERID,GET_SEARCH_ITEM,UPDATE_FRIEND_STATE } from "../Actions/userInfoActions"
 
 export const initUserInfoState = {
     CurrentUserID:0,
@@ -9,17 +9,17 @@ export const initUserInfoState = {
         userDescription:"",
         isCurrentUser:false,
         avatarImage:"",
-        coverImage:""
+        coverImage:"",
+        friendStatus:""
     }
-}
+};
 
 export default userInfoReducer = (state = initUserInfoState,action) =>{
 
     switch(action.type)
     {
         case GET_USERINFO:
-            
-            const {idUser,isCurrentUser,userDescription,userName,coverImage,avatarImage} = action.payload 
+            const {idUser,isCurrentUser,userDescription,userName,coverImage,avatarImage,friendStatus} = action.payload 
             return{
                 ...state,
                 UserInfo:{
@@ -28,8 +28,8 @@ export default userInfoReducer = (state = initUserInfoState,action) =>{
                     userDescription:userDescription,
                     isCurrentUser:isCurrentUser,
                     coverImage:coverImage,
-                    avatarImage:avatarImage
-
+                    avatarImage:avatarImage,
+                    friendStatus:friendStatus
                 }
             }
         case GET_CURRENT_USERID:
@@ -43,6 +43,22 @@ export default userInfoReducer = (state = initUserInfoState,action) =>{
                 ...state,
                 Search:action.payload
             }
+        case UPDATE_FRIEND_STATE:{
+            const {idFriend,status} = action.payload
+            console.log("day la userInfoReducer:",idFriend," ",status) 
+            if(state.UserInfo.idUser == idFriend)
+            {
+                return{
+                    ...state,
+                    UserInfo:{
+                        ...state.UserInfo,
+                        friendStatus:status
+                    }
+                };
+            }
+            else
+                return state 
+        }
         default:
             return state
     }
